@@ -1,2 +1,2 @@
-# CSAR-Microservice
-ASP.NET Core WebAPI microservice app for communication with the state authorities.
+# Civilian and State Authorities Reports and Notifications
+ASP.NET Core WebAPI microservice app for communication between civilians and state authorities
