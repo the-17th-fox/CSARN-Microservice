@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CSARNCore.AccountsMsvc.Models;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace CSARNCore.MessagingMicroservice.Models
@@ -8,7 +9,11 @@ namespace CSARNCore.MessagingMicroservice.Models
         [Required]
         public string Organization { get; set; } = string.Empty;
 
+        [Required]
+        public Guid AccountId { get; set; }
+
         // Nav. fields
         public List<Tag> Tags { get; set; } = new();
+        public Account Account { get; set; } = null!;
     }
 }

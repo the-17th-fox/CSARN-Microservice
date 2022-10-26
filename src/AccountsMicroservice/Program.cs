@@ -1,4 +1,4 @@
-using AccountsMsvc.Infrastructure;
+using CSARNCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +6,7 @@ var services = builder.Services;
 var config = builder.Configuration;
 
 //Database
-services.AddDbContext<AccountsContext>(opt =>
+services.AddDbContext<CSARNContext>(opt =>
     opt.UseSqlServer(config.GetConnectionString("DatabaseConnection")));
 
 services.AddControllers();

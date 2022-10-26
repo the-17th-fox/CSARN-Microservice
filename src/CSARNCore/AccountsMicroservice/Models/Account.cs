@@ -1,6 +1,7 @@
 ﻿using CSARNCore.Generics;
 using CSARNCore.MessagingMicroservice.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSARNCore.AccountsMsvc.Models
 {
@@ -8,6 +9,7 @@ namespace CSARNCore.AccountsMsvc.Models
     {
         [Required]
         public Guid PassportId { get; set; }
+        [ForeignKey(nameof(PassportId))]
         public Passport Passport { get; set; } = null!;
 
         public List<Notification> Notifications { get; set; } = new();

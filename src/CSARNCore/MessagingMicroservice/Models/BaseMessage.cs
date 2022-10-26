@@ -7,8 +7,5 @@ namespace CSARNCore.MessagingMicroservice.Models
     {
         public string Header { get; set; } = string.Empty;
         public string Body { get; set; } = string.Empty;
-
-        public Guid AccountId;
-        public Account Account { get; set; } = null!;
     }
 }

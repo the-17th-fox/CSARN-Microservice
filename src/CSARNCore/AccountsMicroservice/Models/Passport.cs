@@ -1,13 +1,13 @@
 ﻿using CSARNCore.Generics;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSARNCore.AccountsMsvc.Models
 {
     [Index(nameof(EncodedNumber), IsUnique = true)]
     public class Passport : BaseModel
     {
-        [Required]
         public Guid AccountId { get; set; }
         public Account Account { get; set; } = null!;
 

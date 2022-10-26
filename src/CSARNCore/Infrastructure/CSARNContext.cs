@@ -1,19 +1,31 @@
 ﻿using CSARNCore.AccountsMsvc.Constants;
 using CSARNCore.AccountsMsvc.Models;
 using CSARNCore.Generics;
+using CSARNCore.MessagingMicroservice.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AccountsMsvc.Infrastructure
+namespace CSARNCore.Infrastructure
 {
-    public class AccountsContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
+    public class CSARNContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
     {
+        // Accounts msvc
         public DbSet<Passport> Passports => Set<Passport>();
 
-        public AccountsContext(DbContextOptions<AccountsContext> opt) : base(opt)
+        // Messaging msvc
+        public DbSet<Tag> Tags => Set<Tag>();
+        public DbSet<Response> Responses => Set<Response>();
+        public DbSet<Report> Reports => Set<Report>();
+        public DbSet<Notification> Notifications => Set<Notification>();
+
+        public CSARNContext(DbContextOptions<CSARNContext> opt) : base(opt)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
