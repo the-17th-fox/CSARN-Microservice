@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSARNCore.MessagingMicroservice.Models
 {
-    public class Response : BaseMessage
+    public class Reply : BaseMessage
     {
         [Required]
         public string Organization { get; set; } = null!;

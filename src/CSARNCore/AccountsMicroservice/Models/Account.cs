@@ -14,7 +14,7 @@ namespace CSARNCore.AccountsMsvc.Models
 
         public List<Notification> Notifications { get; set; } = new();
         public List<Report> Reports { get; set; } = new();
-        public List<Response> Responses { get; set; } = new();
+        public List<Reply> Responses { get; set; } = new();
 
         // Account management
         public bool IsDeleted { get; set; }

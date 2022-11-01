@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountsMicroservice", "Acc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSARNCore", "CSARNCore\CSARNCore.csproj", "{2AE13D25-41EA-46A2-BED7-B75D63FFD7B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingMicroservice", "ReportsNotificationsMicroservice\MessagingMicroservice.csproj", "{5332B55E-BA9F-445E-891E-5154AF3736C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingMicroservice", "MessagingMicroservice\MessagingMicroservice.csproj", "{5332B55E-BA9F-445E-891E-5154AF3736C8}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MessagingDatabase", "MessagingDatabase\MessagingDatabase.sqlproj", "{DFB71558-B2A0-432C-9A5B-CA93D86201C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,12 @@ Global
 		{5332B55E-BA9F-445E-891E-5154AF3736C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5332B55E-BA9F-445E-891E-5154AF3736C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5332B55E-BA9F-445E-891E-5154AF3736C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB71558-B2A0-432C-9A5B-CA93D86201C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB71558-B2A0-432C-9A5B-CA93D86201C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB71558-B2A0-432C-9A5B-CA93D86201C5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DFB71558-B2A0-432C-9A5B-CA93D86201C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB71558-B2A0-432C-9A5B-CA93D86201C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB71558-B2A0-432C-9A5B-CA93D86201C5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

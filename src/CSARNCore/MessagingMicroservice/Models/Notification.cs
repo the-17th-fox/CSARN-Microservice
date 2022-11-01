@@ -13,7 +13,7 @@ namespace CSARNCore.MessagingMicroservice.Models
         public Guid AccountId { get; set; }
 
         // Nav. fields
-        public List<Tag> Tags { get; set; } = new();
+        public List<Classification> Classifications { get; set; } = new();
         public Account Account { get; set; } = null!;
     }
 }

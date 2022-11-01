@@ -1,4 +1,3 @@
-using CSARNCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,8 +5,6 @@ var services = builder.Services;
 var config = builder.Configuration;
 
 //Database
-services.AddDbContext<CSARNContext>(opt =>
-    opt.UseSqlServer(config.GetConnectionString("DatabaseConnection")));
 
 services.AddControllers();
 services.AddEndpointsApiExplorer();

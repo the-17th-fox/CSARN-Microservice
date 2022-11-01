@@ -11,20 +11,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSARNCore.Infrastructure
+namespace AccountsMsvc.Infrastructure
 {
-    public class CSARNContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
+    internal class AccountsContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
     {
         // Accounts msvc
         public DbSet<Passport> Passports => Set<Passport>();
 
         // Messaging msvc
-        public DbSet<Tag> Tags => Set<Tag>();
-        public DbSet<Response> Responses => Set<Response>();
+        public DbSet<Classification> Tags => Set<Classification>();
+        public DbSet<Reply> Responses => Set<Reply>();
         public DbSet<Report> Reports => Set<Report>();
         public DbSet<Notification> Notifications => Set<Notification>();
 
-        public CSARNContext(DbContextOptions<CSARNContext> opt) : base(opt)
+        public AccountsContext(DbContextOptions<AccountsContext> opt) : base(opt)
         {
         }
 
