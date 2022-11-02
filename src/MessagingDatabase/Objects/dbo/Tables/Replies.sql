@@ -5,7 +5,7 @@
     [Body]         NVARCHAR (MAX)   NOT NULL,
     [AccountId]    UNIQUEIDENTIFIER NOT NULL,
 	[ReportId]   UNIQUEIDENTIFIER NOT NULL,
-	[WasRead]	   BIT				NOT NULL,
+	[WasRead]	   BIT				NOT NULL ,
     [CreatedAt] DATETIME2 NOT NULL DEFAULT GETDATE(), 
     [UpdatedAt] DATETIME2 NOT NULL DEFAULT GETDATE(), 
     CONSTRAINT [FK_Replies_Reports] FOREIGN KEY ([ReportId]) REFERENCES [Reports]([Id]) 

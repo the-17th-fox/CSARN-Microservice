@@ -17,10 +17,4 @@ BEGIN
 			@Header,
 			@Body,
 			@AccountId)
-	
-	--SET @Id = IDENT_CURRENT()
-
-	--SELECT Id, Organization, Header, Body, AccountId
-	--FROM Notifications
-	--WHERE Id = @Id
 END

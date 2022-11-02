@@ -3,7 +3,14 @@
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT N.Id, N.Organization, N.Header, N.Body, N.AccountId, NC.ClassificationId
+	SELECT 
+		N.Id, 
+		N.Organization, 
+		N.Header, 
+		N.Body, 
+		N.AccountId, 
+		NC.ClassificationId
+
 	FROM Notifications AS N
 
 	LEFT JOIN NotificationsClassifications AS NC

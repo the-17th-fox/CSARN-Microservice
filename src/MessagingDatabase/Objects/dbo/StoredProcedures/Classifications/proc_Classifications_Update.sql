@@ -11,8 +11,4 @@ BEGIN
 	SET Title = @Title
 
 	WHERE Id = @Id
-
-	--SELECT Id, Organization, Header, Body, AccountId
-	--FROM Notifications
-	--WHERE Id = @Id
 END

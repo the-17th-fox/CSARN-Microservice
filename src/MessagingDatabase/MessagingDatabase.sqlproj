@@ -62,6 +62,9 @@
     <Folder Include="Objects\dbo\StoredProcedures\Notifications" />
     <Folder Include="Objects\dbo\StoredProcedures\Classifications" />
     <Folder Include="Objects\dbo\StoredProcedures\NotificationsClassifications" />
+    <Folder Include="Objects\dbo\StoredProcedures\Replies" />
+    <Folder Include="Objects\dbo\StoredProcedures\Reports" />
+    <Folder Include="Objects\dbo\StoredProcedures\ReportsClassifications" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Objects\dbo\Tables\Classifications.sql" />
@@ -83,12 +86,24 @@
     <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Add.sql" />
     <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Update.sql" />
     <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Delete.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_GetAll.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_GetById.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetAll.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetById.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetAll.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetById.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Update.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MessagingDatabase.publish.xml" />
-    <None Include="MessagingDatabase_1.publish.xml" />
-    <None Include="MessagingDatabase.publish2.xml" />
+    <RefactorLog Include="MessagingDatabase.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dockerfile" />
   </ItemGroup>
 </Project>

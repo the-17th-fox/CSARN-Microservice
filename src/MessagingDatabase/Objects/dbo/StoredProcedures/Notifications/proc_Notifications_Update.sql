@@ -18,8 +18,4 @@ BEGIN
 		AccountId = @AccountId
 
 	WHERE Id = @Id
-	
-	--SELECT Id, Organization, Header, Body, AccountId
-	--FROM Notifications
-	--WHERE Id = @Id
 END
