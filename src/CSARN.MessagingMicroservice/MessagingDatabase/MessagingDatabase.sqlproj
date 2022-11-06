@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>MessagingDatabase</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{dfb71558-b2a0-432c-9a5b-ca93d86201c5}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath />
+    <RootNamespace>MessagingDatabase</RootNamespace>
+    <AssemblyName>MessagingDatabase</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Objects" />
+    <Folder Include="Objects\dbo" />
+    <Folder Include="Objects\dbo\Tables" />
+    <Folder Include="Objects\dbo\Views" />
+    <Folder Include="Objects\dbo\StoredProcedures" />
+    <Folder Include="Objects\dbo\StoredProcedures\Notifications" />
+    <Folder Include="Objects\dbo\StoredProcedures\Classifications" />
+    <Folder Include="Objects\dbo\StoredProcedures\NotificationsClassifications" />
+    <Folder Include="Objects\dbo\StoredProcedures\Replies" />
+    <Folder Include="Objects\dbo\StoredProcedures\Reports" />
+    <Folder Include="Objects\dbo\StoredProcedures\ReportsClassifications" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Objects\dbo\Tables\Classifications.sql" />
+    <Build Include="Objects\dbo\Tables\Notifications.sql" />
+    <Build Include="Objects\dbo\Tables\NotificationsClassifications.sql" />
+    <Build Include="Objects\dbo\Tables\Replies.sql" />
+    <Build Include="Objects\dbo\Tables\Reports.sql" />
+    <Build Include="Objects\dbo\Tables\ReportsClassifications.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_GetAll.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_GetById.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_GetAll.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_GetById.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetAll.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetById.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetAll.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetById.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Add.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Delete.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Update.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="MessagingDatabase.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dockerfile" />
+  </ItemGroup>
+</Project>
