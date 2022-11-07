@@ -2,7 +2,8 @@
 	@Organization nvarchar(MAX),
 	@Header nvarchar(MAX),
 	@Body nvarchar(MAX),
-	@AccountId uniqueidentifier
+	@AccountId uniqueidentifier,
+	@TargetAccountId uniqueidentifier
 
 AS
 BEGIN
@@ -11,10 +12,12 @@ BEGIN
 			Organization,
 			Header,
 			Body,
-			AccountId)
+			AccountId,
+			TargetAccountId)
 		VALUES (
 			@Organization,
 			@Header,
 			@Body,
-			@AccountId)
+			@AccountId,
+			@TargetAccountId)
 END

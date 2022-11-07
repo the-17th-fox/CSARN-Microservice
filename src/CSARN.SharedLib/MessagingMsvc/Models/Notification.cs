@@ -11,8 +11,11 @@ namespace SharedLib.MessagingMsvc.Models
         [Required]
         public Guid AccountId { get; set; }
 
+        public Guid? TargetAccountId { get; set; }
+
         // Nav. fields
         public List<Classification> Classifications { get; set; } = new();
         public Account Account { get; set; } = null!;
+        public Account? TargetAccount { get; set; }
     }
 }

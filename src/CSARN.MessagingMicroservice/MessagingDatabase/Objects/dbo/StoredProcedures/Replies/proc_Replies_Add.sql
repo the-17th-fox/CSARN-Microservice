@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[proc_Replies_Add]
 	@Header nvarchar(MAX),
 	@Body nvarchar(MAX),
-	@AccountId uniqueidentifier,
+	@AuthorId uniqueidentifier,
 	@ReportId uniqueidentifier,
 	@WasRead bit
 
@@ -17,7 +17,7 @@ BEGIN
 		VALUES (
 			@Header,
 			@Body,
-			@AccountId,
+			@AuthorId,
 			@ReportId,
 			@WasRead)
 END

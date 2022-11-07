@@ -9,12 +9,10 @@ BEGIN
 		R.Header, 
 		R.Body, 
 		R.AccountId, 
-		RP.Id AS ReportId
+		R.WasRead,
+		R.ReportId
 	
 	FROM Replies AS R
-
-	LEFT JOIN Reports AS RP
-	ON R.Id = RP.ReplyId
 
 	ORDER BY R.Id
 	OFFSET (@PageNum - 1) * @PageSize ROWS

@@ -9,6 +9,7 @@ BEGIN
 		N.Header, 
 		N.Body, 
 		N.AccountId, 
+		N.TargetAccountId,
 		NC.ClassificationId
 
 	FROM Notifications AS N

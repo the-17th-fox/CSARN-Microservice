@@ -5,19 +5,22 @@ BEGIN
 	SET NOCOUNT ON
 
 	SELECT 
-		RP.Id, 
-		RP.Header, 
-		RP.Body, 
-		RP.AccountId, 
-		RP.ReplyId,
-		RP.StatusId,
-		RPC.ClassificationId
+		Reports.Id, 
+		Reports.Header, 
+		Reports.Body, 
+		Reports.AccountId,
+		Reports.StatusId,
+		Replies.Id AS ReplyId,
+		RepClass.ClassificationId
 	
-	FROM Reports AS RP
+	FROM Reports
 
-	LEFT JOIN ReportsClassifications AS RPC
-	ON RP.Id = RPC.ReportId
+	LEFT JOIN ReportsClassifications AS RepClass
+	ON RepClass.ReportId = Reports.Id
 
-	WHERE @Id = RP.Id
+	LEFT JOIN Replies
+	ON Replies.ReportId = Reports.Id
+
+	WHERE Reports.Id = @Id
 END
 

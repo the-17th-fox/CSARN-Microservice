@@ -3,7 +3,8 @@
 	@Organization nvarchar(MAX),
 	@Header nvarchar(MAX),
 	@Body nvarchar(MAX),
-	@AccountId uniqueidentifier
+	@AccountId uniqueidentifier,
+	@TargetAccountId uniqueidentifier
 
 AS
 BEGIN
@@ -15,7 +16,8 @@ BEGIN
 		Organization = @Organization,
 		Header = @Header,
 		Body = @Body,
-		AccountId = @AccountId
+		AccountId = @AccountId,
+		TargetAccountId = @TargetAccountId
 
 	WHERE Id = @Id
 END

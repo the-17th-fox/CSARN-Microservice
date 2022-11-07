@@ -14,6 +14,8 @@ namespace SharedLib.MessagingMsvc.Models
         [Required]
         public Guid AccountId { get; set; }
 
+        public bool WasRead { get; set; }
+
         // Nav. fields
         public Report Report { get; set; } = null!;
         public Account Account { get; set; } = null!;

@@ -4,7 +4,12 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	SELECT Id, Header, AccountId, ReportId, WasRead
+	SELECT 
+		Id, 
+		Header, 
+		AccountId, 
+		ReportId, 
+		WasRead
 	FROM Replies
 
 	WHERE @Id = Id

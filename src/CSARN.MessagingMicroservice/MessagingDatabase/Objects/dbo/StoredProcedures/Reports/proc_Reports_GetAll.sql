@@ -5,21 +5,23 @@ AS
 BEGIN
 	SET NOCOUNT ON
 	SELECT 
-		RP.Id, 
-		RP.Header, 
-		RP.Body, 
-		RP.AccountId, 
-		RP.ReplyId,
-		RP.StatusId--,
-		--RPC.ClassificationId
+		Reports.Id, 
+		Reports.Header, 
+		Reports.Body, 
+		Reports.AccountId,
+		Reports.StatusId,
+		Replies.Id AS ReplyId,
+		RepClass.ClassificationId
 	
-	FROM Reports AS RP
+	FROM Reports
 
-	--LEFT JOIN ReportsClassifications AS RPC
-	--ON RP.Id = RPC.ReportId
+	LEFT JOIN ReportsClassifications AS RepClass
+	ON Reports.Id = RepClass.ReportId
 
-	--ORDER BY RP.Id
-	--OFFSET (@PageNum - 1) * @PageSize ROWS
-	--FETCH NEXT @PageSize ROWS ONLY
+	LEFT JOIN Replies
+	ON Reports.Id = Replies.ReportId
+
+	ORDER BY Reports.Id
+	OFFSET (@PageNum - 1) * @PageSize ROWS
+	FETCH NEXT @PageSize ROWS ONLY
 END
-
