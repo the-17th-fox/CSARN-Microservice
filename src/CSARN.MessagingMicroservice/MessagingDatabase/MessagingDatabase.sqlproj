@@ -100,6 +100,10 @@
     <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Add.sql" />
     <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Delete.sql" />
     <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Update.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetUnreadForAccount.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_GetForAccount.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetByAccount.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetForReport.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MessagingDatabase.refactorlog" />
