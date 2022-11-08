@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[Replies]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
+	[Header]       NVARCHAR (MAX)   NOT NULL,
+    [Body]         NVARCHAR (MAX)   NOT NULL,
+    [AccountId]    UNIQUEIDENTIFIER NOT NULL,
+	[ReportId]   UNIQUEIDENTIFIER NOT NULL,
+	[WasRead]	   BIT				NOT NULL ,
+    [CreatedAt] DATETIME2 NOT NULL DEFAULT GETDATE(), 
+    [UpdatedAt] DATETIME2 NOT NULL DEFAULT GETDATE(), 
+    CONSTRAINT [FK_Replies_Reports] FOREIGN KEY ([ReportId]) REFERENCES [Reports]([Id]) 
+);
