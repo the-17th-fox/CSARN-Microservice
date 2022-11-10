@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Sdk Name="Microsoft.Build.Sql" Version="0.1.3-preview" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -22,6 +23,8 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <TargetFrameworkProfile />
+    <GenerateCreateScript>True</GenerateCreateScript>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -52,7 +55,6 @@
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
-  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Objects" />
@@ -85,7 +87,6 @@
     <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_GetById.sql" />
     <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_Update.sql" />
     <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Add.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Update.sql" />
     <Build Include="Objects\dbo\StoredProcedures\NotificationsClassifications\proc_NotificationsClassifications_Delete.sql" />
     <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Add.sql" />
     <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_Delete.sql" />
@@ -99,7 +100,6 @@
     <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Update.sql" />
     <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Add.sql" />
     <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Delete.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Update.sql" />
     <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetUnreadForAccount.sql" />
     <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_GetForAccount.sql" />
     <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetByAccount.sql" />
@@ -107,8 +107,5 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MessagingDatabase.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dockerfile" />
   </ItemGroup>
 </Project>
