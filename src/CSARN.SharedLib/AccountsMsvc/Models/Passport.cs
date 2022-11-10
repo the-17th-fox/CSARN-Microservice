@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SharedLib.Generics;
+﻿using CSARN.SharedLib.Generics.Models;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace SharedLib.AccountsMsvc.Models
