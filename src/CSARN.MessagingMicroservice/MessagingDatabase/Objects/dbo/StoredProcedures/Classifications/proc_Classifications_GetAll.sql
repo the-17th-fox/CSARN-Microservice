@@ -4,7 +4,11 @@
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT Id, Title
+	SELECT 
+		Id, 
+		Title,
+		CreatedAt,
+		UpdatedAt
 	
 	FROM Classifications
 

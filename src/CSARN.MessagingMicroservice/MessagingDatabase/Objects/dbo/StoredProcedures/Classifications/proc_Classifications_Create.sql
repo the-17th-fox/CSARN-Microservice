@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_Classification_Add]
+﻿CREATE PROCEDURE [dbo].[proc_Classifications_Create]
 	@Title nvarchar(MAX)
 
 AS

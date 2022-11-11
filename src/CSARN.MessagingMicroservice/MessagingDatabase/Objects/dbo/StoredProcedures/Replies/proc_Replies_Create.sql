@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_Replies_Add]
+﻿CREATE PROCEDURE [dbo].[proc_Replies_Create]
 	@Header nvarchar(MAX),
 	@Body nvarchar(MAX),
 	@AuthorId uniqueidentifier,

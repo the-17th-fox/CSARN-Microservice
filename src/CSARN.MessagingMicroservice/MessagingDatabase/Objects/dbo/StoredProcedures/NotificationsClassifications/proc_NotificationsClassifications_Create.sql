@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_NotificationsClassifications_Add]
+﻿CREATE PROCEDURE [dbo].[proc_NotificationsClassifications_Create]
 	@NotificationId uniqueidentifier,
 	@ClassificationId uniqueidentifier
 

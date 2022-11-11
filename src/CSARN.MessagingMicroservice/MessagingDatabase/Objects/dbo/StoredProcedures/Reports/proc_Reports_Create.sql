@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_Reports_Add]
+﻿CREATE PROCEDURE [dbo].[proc_Reports_Create]
 	@Header nvarchar(MAX),
 	@Body nvarchar(MAX),
 	@AccountId uniqueidentifier,

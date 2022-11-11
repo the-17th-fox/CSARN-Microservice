@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_Notifications_Add]
+﻿CREATE PROCEDURE [dbo].[proc_Notifications_Create]
 	@Organization nvarchar(MAX),
 	@Header nvarchar(MAX),
 	@Body nvarchar(MAX),

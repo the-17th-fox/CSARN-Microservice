@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_ReportsClassifications_Add]
+﻿CREATE PROCEDURE [dbo].[proc_ReportsClassifications_Create]
 	@ReportId uniqueidentifier,
 	@ClassificationId uniqueidentifier
 
