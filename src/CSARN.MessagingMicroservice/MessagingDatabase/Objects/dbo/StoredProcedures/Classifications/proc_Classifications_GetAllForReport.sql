@@ -1,5 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[proc_Classifications_GetAllForReports]
-	@ClassificationId uniqueidentifier,
+﻿CREATE PROCEDURE [dbo].[proc_Classifications_GetAllForReport]
+	@ReportId uniqueidentifier,
 	@PageNum int,
 	@PageSize int
 AS
@@ -9,7 +9,6 @@ BEGIN
 	SELECT 
 		C.Id, 
 		C.Title,
-		RC.ReportId,
 		C.CreatedAt,
 		C.UpdatedAt
 
@@ -17,7 +16,7 @@ BEGIN
 	
 	LEFT JOIN ReportsClassifications AS RC
 	ON C.Id = RC.ClassificationId
-	WHERE RC.ReportId = @ClassificationId
+	WHERE RC.ReportId = @ReportId
 
 	ORDER BY C.Id
 	OFFSET (@PageNum - 1) * @PageSize ROWS

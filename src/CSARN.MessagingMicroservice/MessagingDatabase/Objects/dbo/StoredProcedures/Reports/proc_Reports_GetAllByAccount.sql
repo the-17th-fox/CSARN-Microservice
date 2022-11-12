@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_Reports_GetByAccount]
+﻿CREATE PROCEDURE [dbo].[proc_Reports_GetAllByAccount]
 	@AccountId uniqueidentifier,
 	@PageNum int,
 	@PageSize int

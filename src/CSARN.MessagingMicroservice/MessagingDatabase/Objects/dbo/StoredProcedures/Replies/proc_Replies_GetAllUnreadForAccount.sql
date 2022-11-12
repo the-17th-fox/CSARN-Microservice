@@ -1,5 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[proc_Replies_GetForReport]
-	@ReportId uniqueidentifier,
+﻿CREATE PROCEDURE [dbo].[proc_Replies_GetAllUnreadForAccount]
+	@ReportAuthorId uniqueidentifier,
 	@PageNum int,
 	@PageSize int
 AS
@@ -9,13 +9,14 @@ BEGIN
 		Id, 
 		Header, 
 		Body, 
-		AccountId, 
-		WasRead,
+		AccountId,
 		ReportId
-	
+
 	FROM Replies
 
-	WHERE ReportId = @ReportId
+	WHERE 
+		AccountId = @ReportAuthorId 
+		AND WasRead = 0
 
 	ORDER BY Id
 	OFFSET (@PageNum - 1) * @PageSize ROWS

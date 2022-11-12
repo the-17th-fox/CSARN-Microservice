@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[proc_Notifications_GetForAccount]
+﻿CREATE PROCEDURE [dbo].[proc_Notifications_GetAllForAccount]
 	@TargetAccountId uniqueidentifier,
 	@PageNum int,
 	@PageSize int
