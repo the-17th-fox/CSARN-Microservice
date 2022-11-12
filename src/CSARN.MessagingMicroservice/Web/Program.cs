@@ -1,10 +1,22 @@
+using DomainServiceAbstractions;
+using Infrastructure.Repositories;
+using Infrastructure.Utilities;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.Configure<RepositoryConfiguration>(config.GetSection("ConnectionStrings"));
+
+services.AddScoped<IClassificationsRepository, ClassificationsRepository>();
+services.AddScoped<IRepliesRepository, RepliesRepository>();
+services.AddScoped<IReportsRepository, ReportsRepository>();
+services.AddScoped<INotificationsRepository, NotificationsRepository>();
+
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 

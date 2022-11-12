@@ -57,7 +57,7 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Classification>> GetAllForReportAsync(Guid reportId, int pageNum, int pageSize)
         {
-            var procedure = $"proc_{_tableName}_GetAllForNotification";
+            var procedure = $"proc_{_tableName}_GetAllForReport";
 
             using (var connection = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(procedure, connection))

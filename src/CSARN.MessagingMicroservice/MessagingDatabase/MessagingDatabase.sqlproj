@@ -50,11 +50,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">22.0</VisualStudioVersion>
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
-    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">22.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Objects" />
@@ -100,12 +101,12 @@
     <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_Update.sql" />
     <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Create.sql" />
     <Build Include="Objects\dbo\StoredProcedures\ReportsClassifications\proc_ReportsClassifications_Delete.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetUnreadForAccount.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_GetForAccount.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetByAccount.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetForReport.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetAllUnreadForAccount.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Notifications\proc_Notifications_GetAllForAccount.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Reports\proc_Reports_GetAllByAccount.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Replies\proc_Replies_GetAllForReport.sql" />
     <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classfications_GetAllForNotification.sql" />
-    <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_GetAllForReports.sql" />
+    <Build Include="Objects\dbo\StoredProcedures\Classifications\proc_Classifications_GetAllForReport.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MessagingDatabase.refactorlog" />
