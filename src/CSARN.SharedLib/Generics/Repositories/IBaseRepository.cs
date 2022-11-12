@@ -1,11 +1,4 @@
-﻿using CSARN.SharedLib.Generics.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CSARN.SharedLib.Generics.Repositories
+﻿namespace SharedLib.Generics.Repositories
 {
     public interface IBaseRepository<TEntity,TKey>
         where TEntity : class

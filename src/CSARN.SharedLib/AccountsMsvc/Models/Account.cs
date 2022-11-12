@@ -1,4 +1,4 @@
-﻿using CSARN.SharedLib.Generics.Models;
+﻿using SharedLib.Generics.Models;
 using SharedLib.MessagingMsvc.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

@@ -1,4 +1,4 @@
-﻿namespace CSARN.SharedLib.Generics.Models
+﻿namespace SharedLib.Generics.Models
 {
     public interface IBaseModelProperties<TKey>
     {

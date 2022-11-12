@@ -1,4 +1,4 @@
-﻿using CSARN.SharedLib.Generics.Models;
+﻿using SharedLib.Generics.Models;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 

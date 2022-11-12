@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace CSARN.SharedLib.Generics.Models
+namespace SharedLib.Generics.Models
 {
     public abstract class BaseIdentityModel : IdentityUser<Guid>, IBaseModelProperties<Guid>
     {

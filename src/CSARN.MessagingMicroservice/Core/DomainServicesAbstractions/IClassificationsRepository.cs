@@ -1,4 +1,4 @@
-﻿using CSARN.SharedLib.Generics.Repositories;
+﻿using SharedLib.Generics.Repositories;
 using SharedLib.MessagingMsvc.Models;
 
 namespace DomainServiceAbstractions
