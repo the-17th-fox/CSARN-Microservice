@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SharedLib.AccountsMsvc.Models;
 using SharedLib.Auth;
-using SharedLib.Generics;
+using SharedLib.Generics.Models;
 
 namespace Infrastructure
 {
