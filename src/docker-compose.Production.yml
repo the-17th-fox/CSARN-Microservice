@@ -1,0 +1,9 @@
+services:
+  ###### Microservices
+  accounts-msvc:
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      
+  messaging-msvc:
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
