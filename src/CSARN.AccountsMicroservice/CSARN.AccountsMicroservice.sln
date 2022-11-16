@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{8C795013-5CDC-4F58-8CF5-7D6E16E02556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{8C795013-5CDC-4F58-8CF5-7D6E16E02556}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSARN.SharedLib", "..\CSARN.SharedLib\CSARN.SharedLib.csproj", "{8EE736EA-BB73-4048-BA9D-2762763C25A2}"
 EndProject
