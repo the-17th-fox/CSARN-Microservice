@@ -11,11 +11,11 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MessagingDatabase", "Messag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{F48D9B0C-C138-4710-BB38-2A266B01EFC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationServiceAbstractions", "Core\ApplicationServicesAbstractions\ApplicationServiceAbstractions.csproj", "{505FDEF4-C87A-4DBD-8A57-BADCCA7B432C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationServices", "Core\ApplicationServicesAbstractions\ApplicationServices.csproj", "{505FDEF4-C87A-4DBD-8A57-BADCCA7B432C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B6B635C1-5566-4BDB-8DA0-F2926A595983}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServiceAbstractions", "Core\DomainServicesAbstractions\DomainServiceAbstractions.csproj", "{53E17CAF-12DE-416F-A7DD-135B16E8CEAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoriesAbstractions", "Core\DomainServicesAbstractions\RepositoriesAbstractions.csproj", "{53E17CAF-12DE-416F-A7DD-135B16E8CEAD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Core\Domain\Domain.csproj", "{2CAA01AB-1E65-4C9B-9AD8-40A5918E467C}"
 EndProject

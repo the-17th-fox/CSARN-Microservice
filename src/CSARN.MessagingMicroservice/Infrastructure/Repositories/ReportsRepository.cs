@@ -1,5 +1,5 @@
-﻿using Domain;
-using DomainServiceAbstractions;
+﻿using Core.Domain;
+using Core.RepositoriesAbstractions;
 using Infrastructure.Utilities;
 using Microsoft.Extensions.Options;
 using SharedLib.MessagingMsvc.Misc;

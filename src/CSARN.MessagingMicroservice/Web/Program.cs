@@ -1,4 +1,4 @@
-using DomainServiceAbstractions;
+using Core.RepositoriesAbstractions;
 using Infrastructure.Repositories;
 using Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,5 @@
 ﻿using SharedLib.Generics.Repositories;
-using Domain;
+using Core.Domain;
 using Infrastructure.Utilities;
 using Microsoft.Extensions.Options;
 using System;

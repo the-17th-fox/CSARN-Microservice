@@ -1,7 +1,7 @@
 ﻿using SharedLib.Generics.Repositories;
 using SharedLib.MessagingMsvc.Models;
 
-namespace DomainServiceAbstractions
+namespace Core.RepositoriesAbstractions
 {
     public interface IClassificationsRepository : IBaseRepository<Classification, Guid>
     {
