@@ -8,7 +8,9 @@ BEGIN
 	
 	UPDATE Classifications
 	
-	SET Title = @Title
+	SET 
+		Title = @Title,
+		UpdatedAt = GETDATE()
 
 	WHERE Id = @Id
 END

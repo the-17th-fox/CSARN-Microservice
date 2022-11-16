@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[proc_NotificationsClassifications_Delete]
-	@Id uniqueidentifier
+	@NotificationId uniqueidentifier,
+	@ClassificationId uniqueidentifier
 AS
 BEGIN
 	SET NOCOUNT ON
@@ -7,5 +8,6 @@ BEGIN
 	DELETE
 	FROM NotificationsClassifications
 
-	WHERE Id = @Id
+	WHERE NotificationId = @NotificationId 
+		AND ClassificationId = @ClassificationId
 END

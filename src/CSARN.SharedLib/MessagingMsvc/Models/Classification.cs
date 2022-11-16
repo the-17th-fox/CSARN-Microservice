@@ -1,4 +1,4 @@
-﻿using SharedLib.Generics;
+﻿using SharedLib.Generics.Models;
 
 namespace SharedLib.MessagingMsvc.Models
 {

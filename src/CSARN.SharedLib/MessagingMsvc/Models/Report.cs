@@ -1,7 +1,6 @@
 ﻿using SharedLib.AccountsMsvc.Models;
 using SharedLib.MessagingMsvc.Misc;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedLib.MessagingMsvc.Models
 {

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CSARN.SharedLib\CSARN.SharedLib.csproj" />
+    <ProjectReference Include="..\Core\DomainServicesAbstractions\RepositoriesAbstractions.csproj" />
+    <ProjectReference Include="..\Core\Domain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>

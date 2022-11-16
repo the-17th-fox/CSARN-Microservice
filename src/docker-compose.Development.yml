@@ -1,0 +1,13 @@
+services:  
+  ###### Microservices
+  accounts-msvc:
+    ports:
+      - "9999:9999"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      
+  messaging-msvc:
+    ports:
+      - "9998:9998"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"

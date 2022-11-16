@@ -1,0 +1,55 @@
+services:         
+######## Accounts msvc
+  accounts-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "CsarnAccountsDbServerPass17"
+      MSSQL_PID: "Express"
+      MSSQL_TCP_PORT: "9823"
+    networks:
+      - csarn
+      
+  accounts-msvc:
+    build:
+      context: .
+      dockerfile: accounts-msvc.Dockerfile
+    environment:
+      ConnectionStrings__DatabaseConnection: "Server=accounts-db,9823;database=account-db;user id=SA;password=CsarnAccountsDbServerPass17"
+      ASPNETCORE_URLS: http://0.0.0.0:9999/
+    networks:
+      - csarn
+    depends_on:
+      - accounts-db
+ 
+######## Messaging msvc
+  messaging-db:
+    build:
+      context: .
+      dockerfile: messaging-db.Dockerfile
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "CsarnMessagingDbServerPass17"
+      MSSQL_PID: "Express"
+      MSSQL_TCP_PORT: "9823"
+    networks:
+      - csarn
+      
+  messaging-msvc:
+    restart: always
+    build:
+      context: .
+      dockerfile: messaging-msvc.Dockerfile
+    environment:
+      ConnectionStrings__DatabaseConnection: "Server=messaging-db,9823;Database=messaging-db;User Id=SA;Password=CsarnMessagingDbServerPass17"
+      ASPNETCORE_URLS: http://0.0.0.0:9998/
+    networks:
+      - csarn
+    depends_on:
+      - messaging-db
+      
+######## Networking
+networks:
+  csarn:
+    driver: bridge
+  
