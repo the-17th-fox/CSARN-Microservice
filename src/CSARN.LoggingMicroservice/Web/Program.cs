@@ -1,6 +1,7 @@
-using Core.ApplicationServices;
 using Core.Constants;
-using Core.DomainServicesAbstractions;
+using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
+using Core.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

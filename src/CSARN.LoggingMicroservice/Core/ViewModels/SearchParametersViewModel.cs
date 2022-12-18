@@ -1,10 +1,11 @@
 ﻿using CSARN.SharedLib.ViewModels;
+using CSARN.SharedLib.ViewModels.Pagination;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.ViewModels
 {
-    public class SearchParametersViewModel
+    public class SearchParametersViewModel : PageParametersViewModel
     {
         [Range(minimum: 1, maximum: 31, ErrorMessage = ViewModelsErrors.OutOfRange)]
         public byte FromDay { get; set; } = 1;

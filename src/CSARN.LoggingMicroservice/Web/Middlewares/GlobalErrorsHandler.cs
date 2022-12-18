@@ -1,5 +1,4 @@
 ﻿using Core.Constants;
-using Core.Utilities;
 using CSARN.SharedLib.Constants.CustomExceptions;
 using System.Net;
 using System.Text.Json;
@@ -9,12 +8,12 @@ namespace Web.Middlewares
     public class GlobalErrorsHandler
     {
         private readonly RequestDelegate _next;
-        private readonly LogsHandler<GlobalErrorsHandler> _logsHandler;
+        private readonly ILogger<GlobalErrorsHandler> _logger;
 
         public GlobalErrorsHandler(RequestDelegate next, ILogger<GlobalErrorsHandler> logger)
         {
             _next = next;
-            _logsHandler = new(logger);
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -40,7 +39,7 @@ namespace Web.Middlewares
 
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        _logsHandler.Log(LogLevel.Critical, LogEvents.ExceptionForm, exception.GetType().Name, exception.Message);
+                        _logger.Log(LogLevel.Critical, LogEvents.ExceptionForm, exception.GetType().Name, exception.Message);
                         break;
                 }
 
