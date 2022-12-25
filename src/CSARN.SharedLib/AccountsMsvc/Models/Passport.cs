@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharedLib.AccountsMsvc.Models
 {
-    [Index(nameof(EncodedNumber), IsUnique = true)]
+    [Index(nameof(Number), IsUnique = true)]
     public class Passport : BaseModel
     {
         public Guid AccountId { get; set; }
@@ -19,9 +19,9 @@ namespace SharedLib.AccountsMsvc.Models
 
         // Passport number
         [Required]
-        public string EncodedRegion { get; set; } = string.Empty;
+        public string Region { get; set; } = string.Empty;
         [Required]
-        public string EncodedNumber { get; set; } = string.Empty;
+        public string Number { get; set; } = string.Empty;
 
     }
 }

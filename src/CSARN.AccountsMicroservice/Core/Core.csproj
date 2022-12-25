@@ -7,12 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
+    <ProjectReference Include="..\..\CSARN.SharedLib\CSARN.SharedLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CSARN.SharedLib\CSARN.SharedLib.csproj" />
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
-
+  
 </Project>

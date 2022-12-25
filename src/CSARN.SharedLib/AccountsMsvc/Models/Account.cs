@@ -12,13 +12,13 @@ namespace SharedLib.AccountsMsvc.Models
         [ForeignKey(nameof(PassportId))]
         public Passport Passport { get; set; } = null!;
 
-        public List<Notification> Notifications { get; set; } = new();
-        public List<Report> Reports { get; set; } = new();
-        public List<Reply> Responses { get; set; } = new();
+        //public List<Notification> Notifications { get; set; } = new();
+        //public List<Report> Reports { get; set; } = new();
+        //public List<Reply> Responses { get; set; } = new();
 
         // Account management
         public bool IsDeleted { get; set; }
-        public bool IsLocked { get; set; }
+        public bool IsBlocked { get; set; }
 
     }
 }
