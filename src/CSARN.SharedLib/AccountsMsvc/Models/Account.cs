@@ -7,10 +7,7 @@ namespace SharedLib.AccountsMsvc.Models
 {
     public class Account : BaseIdentityModel
     {
-        [Required]
-        public Guid PassportId { get; set; }
-        [ForeignKey(nameof(PassportId))]
-        public Passport Passport { get; set; } = null!;
+        public Passport? Passport { get; set; }
 
         //public List<Notification> Notifications { get; set; } = new();
         //public List<Report> Reports { get; set; } = new();
@@ -19,6 +16,5 @@ namespace SharedLib.AccountsMsvc.Models
         // Account management
         public bool IsDeleted { get; set; }
         public bool IsBlocked { get; set; }
-
     }
 }

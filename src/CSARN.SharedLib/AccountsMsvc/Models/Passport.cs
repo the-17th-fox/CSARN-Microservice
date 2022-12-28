@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharedLib.AccountsMsvc.Models
 {
-    [Index(nameof(Number), IsUnique = true)]
+    [Index(nameof(AccountId), IsUnique = true)]
+    [Index(nameof(FirstName), nameof(LastName), nameof(Patronymic))]
     public class Passport : BaseModel
     {
         public Guid AccountId { get; set; }

@@ -3,6 +3,7 @@ using Core.Interfaces.Services;
 using Core.Utilities;
 using Core.ViewModels.Accounts;
 using CSARN.SharedLib.Constants.CustomExceptions;
+using CSARN.SharedLib.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +12,7 @@ using SharedLib.AccountsMsvc.Models;
 using SharedLib.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Transactions;
 
 namespace Core.Services
 {
@@ -27,11 +29,18 @@ namespace Core.Services
             _jwtConfig = jwtConfig;
         }
 
-        public async Task BlockAsync(Guid id)
+        private async Task<Account> CheckIfExistsAsync(Guid accountId)
         {
-            var acc = await _userManager.FindByIdAsync(id.ToString());
+            var acc = await _userManager.FindByIdAsync(accountId.ToString());
             if (acc == null)
                 throw new NotFoundException($"There is no account with the specified id.");
+
+            return acc;
+        }
+
+        public async Task BlockAsync(Guid id)
+        {
+            var acc = await CheckIfExistsAsync(id);
 
             if (acc.IsBlocked)
                 throw new BadRequestException("Account has been already blocked.");
@@ -44,9 +53,7 @@ namespace Core.Services
 
         public async Task UnblockAsyc(Guid id)
         {
-            var acc = await _userManager.FindByIdAsync(id.ToString());
-            if (acc == null)
-                throw new NotFoundException($"There is no account with the specified id.");
+            var acc = await CheckIfExistsAsync(id);
 
             if (!acc.IsBlocked)
                 throw new BadRequestException("Account isn't blocked.");
@@ -57,42 +64,55 @@ namespace Core.Services
                 throw new Exception("Updating account's blocked status has failed.");
         }
 
-        public async Task CreateAsync(RegistrationParametersModel regParams)
+        public async Task CreateAsync(RegistrationViewModel regParams)
         {
             if (regParams.PassRegionCode == SharedLib.AccountsMsvc.Misc.RegionCodes.Undefined)
                 throw new InvalidParamsException("Region code is undefiend.");
 
-            var passport = new Passport()
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                FirstName = regParams.FirstName,
-                LastName = regParams.LastName,
-                Patronymic = regParams.Patronymic,
-                Region = Enum.GetName<RegionCodes>(regParams.PassRegionCode) ?? throw new Exception("Can not get the name of the region"),
-                Number = regParams.PassNumber
-            };
+                try
+                {
+                    var acc = new Account()
+                    {
+                        UserName = regParams.Email,
+                        PhoneNumber = regParams.PhoneNumber,
+                        Email = regParams.Email
+                    };
 
-            var acc = new Account()
-            { 
-                Passport = passport,
-                UserName = regParams.Email,
-                PhoneNumber = regParams.PhoneNumber,
-                Email = regParams.Email
-            };
+                    var pass = new Passport()
+                    {
+                        Account = acc,
+                        FirstName = regParams.FirstName,
+                        LastName = regParams.LastName,
+                        Patronymic = regParams.Patronymic,
+                        Region = Enum.GetName<RegionCodes>(regParams.PassRegionCode) ?? throw new Exception("Can not get the name of the region"),
+                        Number = regParams.PassNumber,
+                    };
 
-            var result = await _userManager.CreateAsync(acc, regParams.Password);
-            if (!result.Succeeded)
-                throw new Exception("User creation failed: " + result.Errors.First<IdentityError>().Description);
+                    acc.Passport = pass;
 
-            result = await _userManager.AddToRoleAsync(acc, AccountsRoles.Citizen);
-            if (!result.Succeeded)
-                throw new Exception("Adding to role failed: " + result.Errors.First<IdentityError>().Description);
+                    var result = await _userManager.CreateAsync(acc, regParams.Password);
+                    if (!result.Succeeded)
+                        throw new Exception("User creation failed: " + result.Errors.First<IdentityError>().Description);
+
+                    result = await _userManager.AddToRoleAsync(acc, AccountsRoles.Citizen);
+                    if (!result.Succeeded)
+                        throw new Exception("Adding to role failed: " + result.Errors.First<IdentityError>().Description);
+
+                    scope.Complete();
+                }
+                catch (Exception)
+                {
+                    scope.Dispose();
+                    throw;
+                }
+            }
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var acc = await _userManager.FindByIdAsync(id.ToString());
-            if (acc == null)
-                throw new NotFoundException($"There is no account with the specified id.");
+            var acc = await CheckIfExistsAsync(id);
 
             if (acc.IsDeleted)
                 throw new BadRequestException("Account has been already deleted.");
@@ -103,16 +123,28 @@ namespace Core.Services
                 throw new Exception("Account deleting has failed.");
         }
 
-        public Task<List<Account>> GetAllAsync(AccPaginationViewModel pageParams)
-        {
-            throw new NotImplementedException();
+        public async Task<List<Account>> GetAllAsync(AccPaginationViewModel pageParams)
+        { 
+            var query = _userManager.Users;
+
+            if (!pageParams.ShowDeleted)
+                query.Where(u => u.IsDeleted == false);
+
+            if (!pageParams.ShowBlocked)
+                query.Where(u => u.IsBlocked == false);
+
+            return await PagedList<Account>.ToPagedListAsync(query, pageParams.PageNumber, pageParams.PageSize);
         }
 
-        public async Task<Account> GetByIdAsync(Guid id)
+        public async Task<Account> GetByIdAsync(Guid id, bool returnDeleted, bool returnBlocked = true)
         {
-            var acc = await _userManager.FindByIdAsync(id.ToString());
-            if (acc == null)
-                throw new NotFoundException($"There is no account with the specified id.");
+            var acc = await CheckIfExistsAsync(id);
+
+            if (acc.IsDeleted && !returnDeleted)
+                throw new BadRequestException("Requested account is deleted.");
+
+            if(acc.IsBlocked && !returnBlocked)
+                throw new BadRequestException("Requested account is blocked.");
 
             return acc;
         }
@@ -166,9 +198,7 @@ namespace Core.Services
 
         public async Task ChangeRoleAsync(Guid id, string roleName)
         {
-            var acc = await _userManager.FindByIdAsync(id.ToString());
-            if (acc == null)
-                throw new NotFoundException($"There is no account with the specified id.");
+            var acc = await CheckIfExistsAsync(id);
 
             if (acc.IsDeleted || acc.IsBlocked)
                 throw new BadRequestException("Account is deleted or blocked.");
@@ -181,6 +211,12 @@ namespace Core.Services
             result = await _userManager.AddToRoleAsync(acc, roleName);
             if (!result.Succeeded)
                 throw new Exception("Adding to role failed: " + result.Errors.First<IdentityError>().Description);
+        }
+
+        public async Task<IList<string>> GetRolesAsync(Guid accountId)
+        {
+            var acc = await CheckIfExistsAsync(accountId);
+            return await _userManager.GetRolesAsync(acc);
         }
     }
 }
