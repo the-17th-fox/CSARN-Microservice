@@ -5,8 +5,8 @@ namespace Core.Interfaces.Repositories
 {
     public interface IPassportsRepository
     {
-        public Task<Passport?> GetByIdAsync(Guid id);
+        public Task<Passport?> GetByAccountIdAsync(Guid accountId);
         public Task<Passport?> GetByPersonalInfo(string firstName, string lastName, string patronymic);
-        public Task UpdateAsync(Guid id, UpdatePassportModel passportModel);
+        public Task UpdateAsync(Guid accountId, UpdatePassportModel passportModel);
     }
 }

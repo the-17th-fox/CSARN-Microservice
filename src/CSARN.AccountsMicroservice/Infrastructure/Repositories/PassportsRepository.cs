@@ -15,9 +15,9 @@ namespace Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Passport?> GetByIdAsync(Guid id)
+        public async Task<Passport?> GetByAccountIdAsync(Guid accountId)
         {
-            return await _dbContext.Passports.FindAsync(id);
+            return await _dbContext.Passports.FirstOrDefaultAsync(p => p.AccountId == accountId);
         }
 
         public async Task<Passport?> GetByPersonalInfo(string firstName, string lastName, string patronymic)
@@ -30,9 +30,9 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync()!;
         }
 
-        public async Task UpdateAsync(Guid id, UpdatePassportModel passportModel)
+        public async Task UpdateAsync(Guid accountId, UpdatePassportModel passportModel)
         {
-            var passport = await _dbContext.Passports.FindAsync(id);
+            var passport = await _dbContext.Passports.FirstOrDefaultAsync(p => p.AccountId == accountId);
 
             _dbContext.Passports.Update(passport!);
 

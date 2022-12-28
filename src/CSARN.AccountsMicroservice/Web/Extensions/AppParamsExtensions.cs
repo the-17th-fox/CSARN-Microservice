@@ -1,29 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SharedLib.Auth;
 using System.Text;
 
 namespace Web.AppParams
 {
-    internal class AppParams
+    internal static class AppParamsExtensions
     {
-        public static AuthenticationOptions GetAuthenticationOptions()
+        public static void GetPredefinedOptions(this AuthenticationOptions opt)
         {
-            var opt = new AuthenticationOptions();
-
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            return opt;
         }
 
-        public static JwtBearerOptions GetJwtBearerOptions(string audience, string issuer, string key)
+        public static void GetPredefinedOptions(this JwtBearerOptions opt, string audience, string issuer, string key)
         {
-            var opt = new JwtBearerOptions();
             opt.TokenValidationParameters = new()
             {
                 ValidateIssuer = true,
@@ -35,13 +29,10 @@ namespace Web.AppParams
                 ValidAudience = audience,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
             };
-            return opt;
         }
 
-        public static AuthorizationOptions GetAuthorizationOptions()
+        public static void GetPredefinedOptions(this AuthorizationOptions opt)
         {
-            var opt = new AuthorizationOptions();
-
             opt.AddPolicy(AccountsPolicies.DefaultRights, policy =>
             {
                 policy.RequireAuthenticatedUser();
@@ -72,8 +63,6 @@ namespace Web.AppParams
                 policy.RequireAuthenticatedUser();
                 policy.RequireRole(AccountsRoles.Administrator);
             });
-
-            return opt;
         }
     }
 }

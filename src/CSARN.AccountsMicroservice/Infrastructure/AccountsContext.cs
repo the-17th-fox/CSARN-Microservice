@@ -20,8 +20,7 @@ namespace Infrastructure
         {
             base.OnModelCreating(builder);
 
-            var roles = AccountsRoles.Roles;
-            builder.Entity<IdentityRole<Guid>>().HasData(roles);
+            builder.Entity<IdentityRole<Guid>>().HasData(AccountsRoles.Roles);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

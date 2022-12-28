@@ -6,7 +6,7 @@ namespace Core.Domain.ViewModels.Accounts
     /// TODO: Add validation attributes
     /// </summary>
 
-    public class RegistrationParametersModel
+    public class RegistrationViewModel
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;

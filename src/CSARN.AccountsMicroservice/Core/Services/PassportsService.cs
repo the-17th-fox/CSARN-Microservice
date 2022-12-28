@@ -15,16 +15,23 @@ namespace Core.Services
             _passportsRep = passportsRep;
         }
 
-        public async Task<Passport> GetByIdAsync(Guid id)
+        private async Task<Passport> CheckIfExistsAsync(Guid accountId)
         {
-            var passport = await _passportsRep.GetByIdAsync(id);
+            var passport = await _passportsRep.GetByAccountIdAsync(accountId);
             if (passport == null)
-                throw new NotFoundException("Passport with specified id wasn't found.");
+                throw new NotFoundException("Passport with specified accountId wasn't found.");
 
             return passport;
         }
 
-        public async Task<Passport> GetByPersonalInfo(string firstName, string lastName, string patronymic)
+        public async Task<Passport> GetByAccountIdAsync(Guid accountId)
+        {
+            var passport = await CheckIfExistsAsync(accountId);
+
+            return passport;
+        }
+
+        public async Task<Passport> GetByPersonalInfoAsync(string firstName, string lastName, string patronymic)
         {
             var passport = await _passportsRep.GetByPersonalInfo(firstName, lastName, patronymic);
             if (passport == null)
@@ -33,13 +40,11 @@ namespace Core.Services
             return passport;
         }
 
-        public async Task UpdateAsync(Guid id, UpdatePassportModel passportModel)
+        public async Task UpdateAsync(Guid accountId, UpdatePassportModel passportModel)
         {
-            var passport = await _passportsRep.GetByIdAsync(id);
-            if (passport == null)
-                throw new NotFoundException("Passport with specified id wasn't found.");
+            var passport = await CheckIfExistsAsync(accountId);
 
-             await _passportsRep.UpdateAsync(id, passportModel);
+            await _passportsRep.UpdateAsync(accountId, passportModel);
         }
     }
 }
