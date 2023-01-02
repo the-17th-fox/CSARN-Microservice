@@ -2,6 +2,7 @@
 {
     public enum RegionCodes
     {
+        Undefined, 
         AB, // Brest reg
         BM, // Vitebsk reg
         HB, // Gomel reg
