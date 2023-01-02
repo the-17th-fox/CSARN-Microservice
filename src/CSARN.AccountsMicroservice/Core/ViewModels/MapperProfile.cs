@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.ViewModels.Accounts;
+using Core.ViewModels.Passports;
 using SharedLib.AccountsMsvc.Models;
 
 namespace Core.Domain.ViewModels
@@ -9,6 +10,7 @@ namespace Core.Domain.ViewModels
         public MapperProfile() 
         {
             CreateMap<Account, AccountViewModel>();
+            CreateMap<Passport, PassportViewModel>();
         }
     }
 }
