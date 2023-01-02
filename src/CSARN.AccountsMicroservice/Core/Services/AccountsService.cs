@@ -51,7 +51,7 @@ namespace Core.Services
                 throw new Exception("Updating account's blocked status has failed.");
         }
 
-        public async Task UnblockAsyc(Guid id)
+        public async Task UnblockAsync(Guid id)
         {
             var acc = await CheckIfExistsAsync(id);
 
@@ -83,9 +83,9 @@ namespace Core.Services
                     var pass = new Passport()
                     {
                         Account = acc,
-                        FirstName = regParams.FirstName,
-                        LastName = regParams.LastName,
-                        Patronymic = regParams.Patronymic,
+                        FirstName = regParams.FirstName.ToUpperInvariant(),
+                        LastName = regParams.LastName.ToUpperInvariant(),
+                        Patronymic = regParams.Patronymic.ToUpperInvariant(),
                         Region = Enum.GetName<RegionCodes>(regParams.PassRegionCode) ?? throw new Exception("Can not get the name of the region"),
                         Number = regParams.PassNumber,
                     };

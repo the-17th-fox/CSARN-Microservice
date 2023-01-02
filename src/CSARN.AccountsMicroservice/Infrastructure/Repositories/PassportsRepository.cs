@@ -1,5 +1,5 @@
-﻿using Core.Domain.ViewModels.Accounts;
-using Core.Interfaces.Repositories;
+﻿using Core.Interfaces.Repositories;
+using Core.ViewModels.Passports;
 using Microsoft.EntityFrameworkCore;
 using SharedLib.AccountsMsvc.Misc;
 using SharedLib.AccountsMsvc.Models;
@@ -24,9 +24,9 @@ namespace Infrastructure.Repositories
         {
             return await _dbContext.Passports
                 .AsNoTracking()
-                .Where(p => p.FirstName == firstName)
-                .Where(p => p.LastName == lastName)
-                .Where(p => p.Patronymic == patronymic)
+                .Where(p => p.FirstName == firstName.ToUpperInvariant())
+                .Where(p => p.LastName == lastName.ToUpperInvariant())
+                .Where(p => p.Patronymic == patronymic.ToUpperInvariant())
                 .FirstOrDefaultAsync()!;
         }
 

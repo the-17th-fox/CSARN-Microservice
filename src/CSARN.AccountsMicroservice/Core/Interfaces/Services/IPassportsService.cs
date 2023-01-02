@@ -1,4 +1,4 @@
-﻿using Core.Domain.ViewModels.Accounts;
+﻿using Core.ViewModels.Passports;
 using SharedLib.AccountsMsvc.Models;
 
 namespace Core.Interfaces.Services

@@ -1,7 +1,8 @@
-﻿using Core.Domain.ViewModels.Accounts;
-using Core.Interfaces.Repositories;
+﻿using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Core.ViewModels.Passports;
 using CSARN.SharedLib.Constants.CustomExceptions;
+using SharedLib.AccountsMsvc.Misc;
 using SharedLib.AccountsMsvc.Models;
 
 namespace Core.Services
@@ -43,6 +44,9 @@ namespace Core.Services
         public async Task UpdateAsync(Guid accountId, UpdatePassportModel passportModel)
         {
             var passport = await CheckIfExistsAsync(accountId);
+
+            if (passportModel.RegionCode == RegionCodes.Undefined)
+                throw new BadRequestException("Region code is undefined.");
 
             await _passportsRep.UpdateAsync(accountId, passportModel);
         }

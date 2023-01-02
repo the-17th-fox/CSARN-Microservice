@@ -14,7 +14,7 @@ namespace Web.Controllers.Accounts
     /// </summary>
 
     [Authorize]
-    [Route("api/account")]
+    [Route("api/accounts")]
     [ApiController]
     public class PublicAccountsController : ControllerBase
     {
@@ -31,7 +31,7 @@ namespace Web.Controllers.Accounts
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync(RegistrationViewModel registrationModel)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegistrationViewModel registrationModel)
         {
             await _accSvc.CreateAsync(registrationModel);
             return Created("register", null);
@@ -39,14 +39,14 @@ namespace Web.Controllers.Accounts
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync(LoginViewModel loginModel)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginModel)
         {
             var token = await _accSvc.LoginAsync(loginModel);
             return Ok(new { BearerToken = token });
         }
 
         [Authorize(Policy = AccountsPolicies.DefaultRights)]
-        [HttpGet("im")]
+        [HttpGet("my")]
         public async Task<IActionResult> GetMyProfileAsync()
         {
             var account = await _accSvc.GetByIdAsync(_accountId, returnDeleted: false);
