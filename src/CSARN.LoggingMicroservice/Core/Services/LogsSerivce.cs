@@ -1,4 +1,5 @@
-﻿using Core.Interfaces.Repositories;
+﻿using Core.Constants;
+using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
 using Core.Models;
 using Core.ViewModels;
@@ -18,9 +19,15 @@ namespace Core.Services
             _logger = logger;
         }
 
-        public async Task AddAsync(LogLevel logLevel, string message, params object?[] args)
+        public async Task AddAsync(NewLogViewModel viewModel)
         {
-            await new Task(() => _logger.Log(logLevel, message, args));
+            await new Task(() =>
+            {
+                _logger.Log(
+                    viewModel.Level, 
+                    $"[{viewModel.ProducerService}] | [{viewModel.Message}]", 
+                    viewModel?.Args);
+            });
         }
 
         public async Task<PagedList<LoggingRecord>> GetAllAsync(SearchParametersViewModel searchParams)

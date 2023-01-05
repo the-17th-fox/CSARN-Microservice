@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -64,6 +64,20 @@ namespace Web.AppParams
             {
                 policy.RequireAuthenticatedUser();
                 policy.RequireRole(AccountsRoles.Administrator);
+            });
+        }
+
+        public static void GetPredefinedOptions(this IBusRegistrationConfigurator opt, ConfigurationManager configManager)
+        {
+            opt.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(configManager["MassTransit:Host"], configManager["MassTransit:VirtualHost"], hostCfg =>
+                {
+                    hostCfg.Username(configManager["MassTransit:UserName"]);
+                    hostCfg.Password(configManager["MassTransit:Password"]);
+                });
+
+                cfg.ConfigureEndpoints(context);
             });
         }
     }
