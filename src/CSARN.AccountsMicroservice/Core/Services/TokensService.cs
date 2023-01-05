@@ -21,9 +21,9 @@ namespace Core.Services
 
         public TokensService(IOptions<JwtConfigModel> jwtConfig, UserManager<Account> userManager, ITokensRepository tokensRepository)
         {
-            _jwtConfig = jwtConfig.Value;
-            _userManager = userManager;
-            _tokensRep = tokensRepository;
+            _jwtConfig = jwtConfig != null ? jwtConfig.Value : throw new ArgumentNullException(nameof(jwtConfig));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _tokensRep = tokensRepository ?? throw new ArgumentNullException(nameof(tokensRepository));
         }
 
         public JwtSecurityToken CreateAccessToken(IList<Claim> claims)

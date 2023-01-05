@@ -26,8 +26,8 @@ namespace Core.Services
 
         public AccountsService(UserManager<Account> userManager, ITokensService tokensSvc, IMemoryCache cache, IOptions<CacheOptions> cacheOptions)
         {
-            _userManager = userManager;
-            _tokensSvc = tokensSvc;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _tokensSvc = tokensSvc ?? throw new ArgumentNullException(nameof(tokensSvc));
             _cache = cache;
             _cacheOptions = cacheOptions.Value;
         }
