@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Core.Constants;
 using Core.Domain.ViewModels.Accounts;
 using Core.Interfaces.Services;
 using Core.ViewModels.Accounts;
+using CSARN.SharedLib.MessageBroker.Logging;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLib.Auth;
@@ -20,13 +23,15 @@ namespace Web.Controllers.Accounts
     {
         private readonly IAccountsService _accSvc;
         private IMapper _mapper;
+        private readonly IPublishEndpoint _pubEndp;
 
         private Guid _accountId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        public PublicAccountsController(IAccountsService accSvc, IMapper mapper)
+        public PublicAccountsController(IAccountsService accSvc, IMapper mapper, IPublishEndpoint publishEndpoint)
         {
             _accSvc = accSvc;
             _mapper = mapper;
+            _pubEndp = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
         }
 
         [AllowAnonymous]
@@ -41,7 +46,12 @@ namespace Web.Controllers.Accounts
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginModel)
         {
+            await _pubEndp.LogInformationAsync("accounts-msvc", LogEvents.LoginAttempt, loginModel.Email);
+
             var token = await _accSvc.LoginAsync(loginModel);
+
+            await _pubEndp.LogInformationAsync("accounts-msvc", LogEvents.TokenReturned, loginModel.Email);
+
             return Ok(new { BearerToken = token });
         }
 

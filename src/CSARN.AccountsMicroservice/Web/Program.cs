@@ -13,10 +13,12 @@ using Core.Services;
 using Core.Interfaces.Repositories;
 using Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
+using MassTransit;
+using Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
-var config = builder.Configuration;
+var configuration = builder.Configuration;
 
 //Database
 services.AddDbContext<AccountsContext>(opt =>
@@ -28,7 +30,7 @@ services.Configure<JwtConfigModel>(opt =>
     opt.Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Authentication:Jwt:Key"]));
 });
 
-services.AddScoped<IAccountsService, AccountsService>();
+services.AddMassTransit(opt => opt.GetPredefinedOptions(configuration));
 services.AddScoped<IPassportsService, PassportsService>();
 services.AddScoped<IPassportsRepository, PassportsRepository>();
 
