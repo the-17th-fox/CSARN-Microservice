@@ -29,8 +29,8 @@ namespace Web.Controllers.Accounts
 
         public PublicAccountsController(IAccountsService accSvc, IMapper mapper, IPublishEndpoint publishEndpoint)
         {
-            _accSvc = accSvc;
-            _mapper = mapper;
+            _accSvc = accSvc ?? throw new ArgumentNullException(nameof(accSvc));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _pubEndp = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
         }
 

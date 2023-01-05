@@ -1,18 +1,9 @@
-using Infrastructure;
 using Core.Utilities;
 using Microsoft.EntityFrameworkCore;
-using SharedLib.AccountsMsvc.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Web.AppParams;
 using Core.Domain.ViewModels;
-using Core.Interfaces.Services;
-using Core.Services;
-using Core.Interfaces.Repositories;
-using Infrastructure.Repositories;
-using Microsoft.OpenApi.Models;
 using MassTransit;
 using Web.Extensions;
 
@@ -20,74 +11,23 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-//Database
-services.AddDbContext<AccountsContext>(opt =>
-    opt.UseSqlServer(config.GetConnectionString("DatabaseConnection")));
-
-services.Configure<JwtConfigModel>(config.GetSection("Authentication").GetSection("Jwt"));
+services.Configure<JwtConfigModel>(configuration.GetSection("Authentication").GetSection("Jwt"));
 services.Configure<JwtConfigModel>(opt =>
 {
-    opt.Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Authentication:Jwt:Key"]));
+    opt.Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:Jwt:Key"]));
 });
 
 services.AddMassTransit(opt => opt.GetPredefinedOptions(configuration));
-services.AddScoped<ITokensService, TokensService>();
-services.AddScoped<ITokensRepository, TokensRepository>();
-services.AddScoped<IAccountsService, AccountsService>();
-services.AddScoped<IPassportsService, PassportsService>();
-services.AddScoped<IPassportsRepository, PassportsRepository>();
 
-//Identity
-services.AddIdentity<Account, IdentityRole<Guid>>(opt =>
-{
-    opt.Password.RequiredLength = 6;
-    opt.Password.RequireNonAlphanumeric = false;
-    opt.Password.RequireLowercase = false;
-    opt.Password.RequireUppercase = false;
-    opt.Password.RequireDigit = true;
-    opt.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<AccountsContext>();
-
-services.AddAuthentication(authOpt => authOpt.GetPredefinedOptions())
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOpt => jwtOpt.GetPredefinedOptions(
-                        audience: config["Authentication:Jwt:Audience"],
-                        issuer: config["Authentication:Jwt:Issuer"],
-                        key: config["Authentication:Jwt:Key"]));
-        
-services.AddAuthorization(opt => opt.GetPredefinedOptions());
+services.AddAuth(configuration);
+services.AddInfrastructure(configuration.GetConnectionString("DatabaseConnection"));
+services.AddServices();
 
 services.AddAutoMapper(typeof(MapperProfile));
 
 services.AddControllers();
 services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "CSARN", Version = "v1" });
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
-    });
-
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
-});
+services.AddSwaggerGen(options => options.GetPredefinedOptions());
 
 var app = builder.Build();
 

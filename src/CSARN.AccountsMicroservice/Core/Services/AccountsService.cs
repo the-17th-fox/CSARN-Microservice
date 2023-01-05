@@ -21,8 +21,8 @@ namespace Core.Services
 
         public AccountsService(UserManager<Account> userManager, ITokensService tokensSvc)
         {
-            _userManager = userManager;
-            _tokensSvc = tokensSvc;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _tokensSvc = tokensSvc ?? throw new ArgumentNullException(nameof(tokensSvc));
         }
         
         /// Auth methods below
