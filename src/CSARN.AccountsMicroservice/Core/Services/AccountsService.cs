@@ -25,8 +25,8 @@ namespace Core.Services
         public AccountsService(UserManager<Account> userManager, IPassportsService passSvc, IOptions<JwtConfigModel> jwtConfig)
         {
             _userManager = userManager;
-            _passSvc = passSvc;
-            _jwtConfig = jwtConfig;
+            _passSvc = passSvc ?? throw new ArgumentNullException(nameof(passSvc));
+            _jwtConfig = jwtConfig ?? throw new ArgumentNullException(nameof(jwtConfig));
         }
 
         private async Task<Account> CheckIfExistsAsync(Guid accountId)

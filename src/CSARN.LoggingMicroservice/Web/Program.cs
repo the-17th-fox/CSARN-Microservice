@@ -6,6 +6,7 @@ using Core.Services;
 using Infrastructure;
 using MassTransit;
 using Serilog;
+using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -42,6 +43,8 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalErrorsHandler>();
 
 if (app.Environment.IsDevelopment())
 {

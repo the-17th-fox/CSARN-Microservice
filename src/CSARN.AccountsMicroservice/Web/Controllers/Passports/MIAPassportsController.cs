@@ -21,8 +21,8 @@ namespace Web.Controllers.Passports
 
         public MIAPassportsController(IPassportsService passSvc, IMapper mapper)
         {
-            _passSvc = passSvc;
-            _mapper = mapper;   
+            _passSvc = passSvc ?? throw new ArgumentNullException(nameof(passSvc));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));   
         }
 
         [HttpPost("search")]

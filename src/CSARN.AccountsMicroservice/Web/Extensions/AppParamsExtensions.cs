@@ -1,67 +1,37 @@
 ﻿using MassTransit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
-using SharedLib.Auth;
-using System.Text;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Web.AppParams
 {
     internal static class AppParamsExtensions
     {
-        public static void GetPredefinedOptions(this AuthenticationOptions opt)
+        public static void GetPredefinedOptions(this SwaggerGenOptions opt)
         {
-            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }
-
-        public static void GetPredefinedOptions(this JwtBearerOptions opt, string audience, string issuer, string key)
-        {
-            opt.TokenValidationParameters = new()
+            opt.SwaggerDoc("v1", new OpenApiInfo { Title = "CSARN", Version = "v1" });
+            opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-
-                ValidIssuer = issuer,
-                ValidAudience = audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-            };
-        }
-
-        public static void GetPredefinedOptions(this AuthorizationOptions opt)
-        {
-            opt.AddPolicy(AccountsPolicies.DefaultRights, policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireRole(
-                    AccountsRoles.Citizen,
-                    AccountsRoles.Administrator,
-                    AccountsRoles.MD,
-                    AccountsRoles.MIA,
-                    AccountsRoles.ME,
-                    AccountsRoles.MES,
-                    AccountsRoles.MH);
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
             });
 
-            opt.AddPolicy(AccountsPolicies.StateExecutives, policy =>
+            opt.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                policy.RequireAuthenticatedUser();
-                policy.RequireRole(
-                    AccountsRoles.Administrator,
-                    AccountsRoles.MD,
-                    AccountsRoles.MIA,
-                    AccountsRoles.ME,
-                    AccountsRoles.MES,
-                    AccountsRoles.MH);
-            });
-
-            opt.AddPolicy(AccountsPolicies.Administrators, policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireRole(AccountsRoles.Administrator);
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
             });
         }
 

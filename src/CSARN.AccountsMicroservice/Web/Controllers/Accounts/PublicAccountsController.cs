@@ -22,15 +22,15 @@ namespace Web.Controllers.Accounts
     public class PublicAccountsController : ControllerBase
     {
         private readonly IAccountsService _accSvc;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IPublishEndpoint _pubEndp;
 
         private Guid _accountId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public PublicAccountsController(IAccountsService accSvc, IMapper mapper, IPublishEndpoint publishEndpoint)
         {
-            _accSvc = accSvc;
-            _mapper = mapper;
+            _accSvc = accSvc ?? throw new ArgumentNullException(nameof(accSvc));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _pubEndp = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
         }
 

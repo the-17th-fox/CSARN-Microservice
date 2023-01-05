@@ -21,8 +21,8 @@ namespace Web.Controllers.Accounts
 
         public AdminAccountsController(IAccountsService accSvc, IMapper mapper)
         {
-            _accSvc = accSvc;
-            _mapper = mapper;
+            _accSvc = accSvc ?? throw new ArgumentNullException(nameof(accSvc));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
 

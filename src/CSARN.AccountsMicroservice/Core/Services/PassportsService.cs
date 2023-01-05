@@ -13,7 +13,7 @@ namespace Core.Services
 
         public PassportsService(IPassportsRepository passportsRep)
         {
-            _passportsRep = passportsRep;
+            _passportsRep = passportsRep ?? throw new ArgumentNullException(nameof(passportsRep));
         }
 
         private async Task<Passport> CheckIfExistsAsync(Guid accountId)
