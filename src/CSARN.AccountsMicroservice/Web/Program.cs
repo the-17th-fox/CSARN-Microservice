@@ -28,6 +28,7 @@ services.Configure<JwtConfigModel>(opt =>
     opt.Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Authentication:Jwt:Key"]));
 });
 
+services.AddScoped<ITokensService, TokensService>();
 services.AddScoped<IAccountsService, AccountsService>();
 services.AddScoped<IPassportsService, PassportsService>();
 services.AddScoped<IPassportsRepository, PassportsRepository>();

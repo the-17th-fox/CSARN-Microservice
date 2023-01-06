@@ -6,7 +6,8 @@ namespace Core.Utilities
     {
         public string Issuer { get; set; } = string.Empty;
         public string Audience { get; set; } = string.Empty;
-        public int LifetimeHours { get; set; }
+        public int AuthTokenLifetimeInMinutes { get; set; }
+        public int RefreshTokenLifetimeInDays { get; set; }
 
         public SymmetricSecurityKey? Key { get; set; }
     }
