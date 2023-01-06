@@ -11,6 +11,7 @@ namespace Infrastructure
     {
         // Accounts msvc
         public DbSet<Passport> Passports => Set<Passport>();
+        public DbSet<RefreshToken> RefreshTokens=> Set<RefreshToken>();
 
         public AccountsContext(DbContextOptions<AccountsContext> opt) : base(opt)
         {
@@ -21,6 +22,13 @@ namespace Infrastructure
             base.OnModelCreating(builder);
 
             builder.Entity<IdentityRole<Guid>>().HasData(AccountsRoles.Roles);
+
+            builder.Entity<Account>()
+                .Ignore(c => c.PhoneNumberConfirmed)
+                .Ignore(c => c.EmailConfirmed)
+                .Ignore(c => c.TwoFactorEnabled)
+                .Ignore(c => c.LockoutEnabled)
+                .Ignore(c => c.LockoutEnd);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -28,30 +36,23 @@ namespace Infrastructure
             var updatedAt = nameof(BaseModel.UpdatedAt);
             var createdAt = nameof(BaseModel.CreatedAt);
 
-            var entries = ChangeTracker
-                .Entries()
-                .Where(e =>
-                    e.State == EntityState.Modified || e.State == EntityState.Added)
-                .Where(e =>
-                    e.Properties.Where(p =>
-                        p.Metadata.Name == updatedAt || p.Metadata.Name == createdAt).Any());
-
+            var entries = ChangeTracker.Entries();
             if (!entries.Any())
                 return await base.SaveChangesAsync(cancellationToken);
 
-            foreach (var entityEntry in entries)
-            {
-                switch (entityEntry.State)
-                {
-                    case EntityState.Modified:
-                        entityEntry.Property(updatedAt).CurrentValue = DateTime.UtcNow;
-                        break;
+            var modifed = entries
+                .Where(e => e.State == EntityState.Modified)
+                .Where(e => e.Properties.Where(p => p.Metadata.Name == updatedAt).Any());
 
-                    case EntityState.Added:
-                        entityEntry.Property(createdAt).CurrentValue = DateTime.UtcNow;
-                        break;
-                }
-            }
+            var added = entries
+                .Where(e => e.State == EntityState.Added)
+                .Where(e => e.Properties.Where(p => p.Metadata.Name == createdAt).Any());
+
+            foreach (var entityEntry in added)
+                entityEntry.Property(createdAt).CurrentValue = DateTime.UtcNow;
+
+            foreach (var entityEntry in modifed)
+                entityEntry.Property(updatedAt).CurrentValue = DateTime.UtcNow;
 
             return await base.SaveChangesAsync(cancellationToken);
         }

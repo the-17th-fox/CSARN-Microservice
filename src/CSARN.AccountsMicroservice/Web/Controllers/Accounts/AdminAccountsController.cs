@@ -70,8 +70,15 @@ namespace Web.Controllers.Accounts
             return Ok();
         }
 
+        [HttpPatch("clear-access-failed-counter/{id}")]
+        public async Task<IActionResult> ClearAccessFailedCounterAsync(Guid id)
+        {
+            await _accSvc.ClearAccessFailedCounterAsync(id);
+            return Ok();
+        }
+
         [HttpPatch("change-role/{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id, string newRoleName)
+        public async Task<IActionResult> ChangeRoleAsync(Guid id, string newRoleName)
         {
             await _accSvc.ChangeRoleAsync(id, newRoleName);
             return Ok();

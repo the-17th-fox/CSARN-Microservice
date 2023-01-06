@@ -6,15 +6,20 @@ namespace Core.Interfaces.Services
 {
     public interface IAccountsService
     {
+        // Auth methods
         public Task CreateAsync(RegistrationViewModel regParams);
-        public Task<Account> GetByIdAsync(Guid id, bool returnDeleted, bool returnBlocked = true);
-        public Task<List<Account>> GetAllAsync(AccPaginationViewModel pageParams);
+        public Task<TokenViewModel> LoginAsync(LoginViewModel loginViewModel);
+
+        // Accs management methods 
         public Task BlockAsync(Guid id);
         public Task UnblockAsync(Guid id);
+        public Task ClearAccessFailedCounterAsync(Guid id);
         public Task DeleteAsync(Guid id);
-        public Task<string> LoginAsync(LoginViewModel loginViewModel);
+        public Task<Account> GetByIdAsync(Guid id, bool returnDeleted, bool returnBlocked = true);
+        public Task<List<Account>> GetAllAsync(AccPaginationViewModel pageParams);
+        public Task<IList<string>> GetRolesAsync(Guid id);
         public Task ChangeRoleAsync(Guid id, string roleName);
-        public Task<IList<string>> GetRolesAsync(Guid accountId);
+        
         // TODO: Add acc restoring method
     }
 }
