@@ -10,6 +10,11 @@ namespace Core.Domain.ViewModels
         public MapperProfile() 
         {
             CreateMap<Account, AccountViewModel>();
+
+            CreateMap<Account, ExtendedAccountViewModel>()
+                .ForMember(m => m.IsRevoked, a => a.MapFrom(src => src.RefreshToken.IsRevoked))
+                .ForMember(m => m.ExpiresAt, a => a.MapFrom(src => src.RefreshToken.ExpiresAt));
+
             CreateMap<Passport, PassportViewModel>();
         }
     }

@@ -104,9 +104,6 @@ namespace Core.Services
 
             var accessToken = _tokensSvc.CreateAccessToken(userClaims);
 
-            if (acc.RefreshTokenId != null)
-                await _tokensSvc.RevokeRefreshTokenAsync(acc.Id);
-
             var refrToken = _tokensSvc.GenerateRefreshToken();
             acc.RefreshToken = refrToken;
             await _userManager.UpdateAsync(acc);

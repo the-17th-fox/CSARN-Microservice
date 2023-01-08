@@ -55,92 +55,73 @@ namespace Infrastructure.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "RefreshTokenId",
+                name: "RefrToken",
                 table: "AspNetUsers",
                 type: "uniqueidentifier",
                 nullable: true);
 
-            migrationBuilder.CreateTable(
-                name: "RefreshTokens",
-                columns: table => new
-                {
-                    Token = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Revoked = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefreshTokens", x => x.Token);
-                });
+            migrationBuilder.AddColumn<DateTime>(
+                name: "RefrToken.ExpAt",
+                table: "AspNetUsers",
+                type: "datetime2",
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "RefrToken.IsRevoked",
+                table: "AspNetUsers",
+                type: "bit",
+                nullable: true);
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("2541278d-dfe8-4555-b2d2-a5ba05bebe21"), "457552ae-5a18-4fd6-a2cf-2774d62c0346", "MinOfEmergencySituations", "MinOfEmergencySituations" },
-                    { new Guid("a2f4c175-f5e9-4d7f-be73-3a9426d6f96c"), "60e2779b-82b0-44e6-8ec4-97c7a78e7c9f", "Administrator", "Administrator" },
-                    { new Guid("c62f4117-cb3a-4971-b36b-6bbb6b14e6ab"), "32947559-ed51-4160-a6c0-33c5ef77829e", "MinOfInternalAffairs", "MinOfInternalAffairs" },
-                    { new Guid("e9678028-0333-4edf-a660-f5ccf1a5eef4"), "e904aee6-c66e-4266-aa47-0dc637986df6", "Citizen", "Citizen" },
-                    { new Guid("f7cb59f5-ae28-4c37-bb1c-fc3ca7f8e92e"), "1d23bfcf-222d-470e-b60b-620fbba217bd", "MinOfHealth", "MinOfHealth" }
+                    { new Guid("3c35a26d-fbba-4070-8e51-da970296d0be"), "542dd129-63fa-4cf3-82bd-9d772276f228", "Administrator", "Administrator" },
+                    { new Guid("60fe1c4e-d715-4f1e-ac7b-103c62f9c79d"), "55c24ccd-3055-4c86-b3de-8af901f4da30", "MinOfEmergencySituations", "MinOfEmergencySituations" },
+                    { new Guid("8ed1fa25-c70e-4595-a398-7c5e6a4e92dd"), "1662e5aa-922e-4fe9-ba19-d28b8caac6af", "MinOfHealth", "MinOfHealth" },
+                    { new Guid("96f0fe0c-126c-4041-9a27-a1fe203ddd5c"), "8b556512-42c2-4d68-bcca-3bf9fab10b0a", "Citizen", "Citizen" },
+                    { new Guid("e116b3eb-de4a-450a-bf77-29b07615c629"), "cd88e363-b4f6-49df-abb6-6cda20cfd05d", "MinOfInternalAffairs", "MinOfInternalAffairs" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_RefreshTokenId",
-                table: "AspNetUsers",
-                column: "RefreshTokenId",
-                unique: true,
-                filter: "[RefreshTokenId] IS NOT NULL");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_RefreshTokens_RefreshTokenId",
-                table: "AspNetUsers",
-                column: "RefreshTokenId",
-                principalTable: "RefreshTokens",
-                principalColumn: "Token");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_RefreshTokens_RefreshTokenId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "RefreshTokens");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_RefreshTokenId",
-                table: "AspNetUsers");
+            migrationBuilder.DeleteData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: new Guid("3c35a26d-fbba-4070-8e51-da970296d0be"));
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("2541278d-dfe8-4555-b2d2-a5ba05bebe21"));
+                keyValue: new Guid("60fe1c4e-d715-4f1e-ac7b-103c62f9c79d"));
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("a2f4c175-f5e9-4d7f-be73-3a9426d6f96c"));
+                keyValue: new Guid("8ed1fa25-c70e-4595-a398-7c5e6a4e92dd"));
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("c62f4117-cb3a-4971-b36b-6bbb6b14e6ab"));
+                keyValue: new Guid("96f0fe0c-126c-4041-9a27-a1fe203ddd5c"));
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("e9678028-0333-4edf-a660-f5ccf1a5eef4"));
-
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: new Guid("f7cb59f5-ae28-4c37-bb1c-fc3ca7f8e92e"));
+                keyValue: new Guid("e116b3eb-de4a-450a-bf77-29b07615c629"));
 
             migrationBuilder.DropColumn(
-                name: "RefreshTokenId",
+                name: "RefrToken",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "RefrToken.ExpAt",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "RefrToken.IsRevoked",
                 table: "AspNetUsers");
 
             migrationBuilder.AddColumn<bool>(

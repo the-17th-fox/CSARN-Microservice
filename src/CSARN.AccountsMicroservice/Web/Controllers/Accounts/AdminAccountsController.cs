@@ -32,7 +32,7 @@ namespace Web.Controllers.Accounts
             var acc = await _accSvc.GetByIdAsync(id, returnDeleted, returnBlocked);
             var roles = await _accSvc.GetRolesAsync(id);
 
-            var model = _mapper.Map<AccountViewModel>(acc);
+            var model = _mapper.Map<ExtendedAccountViewModel>(acc);
             model.Roles = roles;
 
             return Ok(model);
@@ -43,7 +43,7 @@ namespace Web.Controllers.Accounts
         {
             var accs = await _accSvc.GetAllAsync(paginationViewModel);
 
-            var modelsList = _mapper.Map<List<AccountViewModel>>(accs);
+            var modelsList = _mapper.Map<List<ExtendedAccountViewModel>>(accs);
             modelsList.ForEach(async m => m.Roles = await _accSvc.GetRolesAsync(m.Id));
 
             return Ok(modelsList);

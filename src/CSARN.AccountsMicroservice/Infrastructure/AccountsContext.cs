@@ -9,9 +9,7 @@ namespace Infrastructure
 {
     public class AccountsContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
     {
-        // Accounts msvc
         public DbSet<Passport> Passports => Set<Passport>();
-        public DbSet<RefreshToken> RefreshTokens=> Set<RefreshToken>();
 
         public AccountsContext(DbContextOptions<AccountsContext> opt) : base(opt)
         {

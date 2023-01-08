@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AccountsContext))]
-    [Migration("20230106132244_add-refresh-token")]
+    [Migration("20230108140944_add-refresh-token")]
     partial class addrefreshtoken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,36 +54,36 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e9678028-0333-4edf-a660-f5ccf1a5eef4"),
-                            ConcurrencyStamp = "e904aee6-c66e-4266-aa47-0dc637986df6",
+                            Id = new Guid("96f0fe0c-126c-4041-9a27-a1fe203ddd5c"),
+                            ConcurrencyStamp = "8b556512-42c2-4d68-bcca-3bf9fab10b0a",
                             Name = "Citizen",
                             NormalizedName = "Citizen"
                         },
                         new
                         {
-                            Id = new Guid("a2f4c175-f5e9-4d7f-be73-3a9426d6f96c"),
-                            ConcurrencyStamp = "60e2779b-82b0-44e6-8ec4-97c7a78e7c9f",
+                            Id = new Guid("3c35a26d-fbba-4070-8e51-da970296d0be"),
+                            ConcurrencyStamp = "542dd129-63fa-4cf3-82bd-9d772276f228",
                             Name = "Administrator",
                             NormalizedName = "Administrator"
                         },
                         new
                         {
-                            Id = new Guid("2541278d-dfe8-4555-b2d2-a5ba05bebe21"),
-                            ConcurrencyStamp = "457552ae-5a18-4fd6-a2cf-2774d62c0346",
+                            Id = new Guid("60fe1c4e-d715-4f1e-ac7b-103c62f9c79d"),
+                            ConcurrencyStamp = "55c24ccd-3055-4c86-b3de-8af901f4da30",
                             Name = "MinOfEmergencySituations",
                             NormalizedName = "MinOfEmergencySituations"
                         },
                         new
                         {
-                            Id = new Guid("c62f4117-cb3a-4971-b36b-6bbb6b14e6ab"),
-                            ConcurrencyStamp = "32947559-ed51-4160-a6c0-33c5ef77829e",
+                            Id = new Guid("e116b3eb-de4a-450a-bf77-29b07615c629"),
+                            ConcurrencyStamp = "cd88e363-b4f6-49df-abb6-6cda20cfd05d",
                             Name = "MinOfInternalAffairs",
                             NormalizedName = "MinOfInternalAffairs"
                         },
                         new
                         {
-                            Id = new Guid("f7cb59f5-ae28-4c37-bb1c-fc3ca7f8e92e"),
-                            ConcurrencyStamp = "1d23bfcf-222d-470e-b60b-620fbba217bd",
+                            Id = new Guid("8ed1fa25-c70e-4595-a398-7c5e6a4e92dd"),
+                            ConcurrencyStamp = "1662e5aa-922e-4fe9-ba19-d28b8caac6af",
                             Name = "MinOfHealth",
                             NormalizedName = "MinOfHealth"
                         });
@@ -232,9 +232,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("RefreshTokenId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -254,10 +251,6 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("RefreshTokenId")
-                        .IsUnique()
-                        .HasFilter("[RefreshTokenId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -305,26 +298,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("FirstName", "LastName", "Patronymic");
 
                     b.ToTable("Passports");
-                });
-
-            modelBuilder.Entity("SharedLib.AccountsMsvc.Models.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Token")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Revoked")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Token");
-
-                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -380,9 +353,30 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("SharedLib.AccountsMsvc.Models.Account", b =>
                 {
-                    b.HasOne("SharedLib.AccountsMsvc.Models.RefreshToken", "RefreshToken")
-                        .WithOne("Account")
-                        .HasForeignKey("SharedLib.AccountsMsvc.Models.Account", "RefreshTokenId");
+                    b.OwnsOne("SharedLib.AccountsMsvc.Models.RefreshToken", "RefreshToken", b1 =>
+                        {
+                            b1.Property<Guid>("AccountId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("ExpiresAt")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("RefrToken.ExpAt");
+
+                            b1.Property<bool>("IsRevoked")
+                                .HasColumnType("bit")
+                                .HasColumnName("RefrToken.IsRevoked");
+
+                            b1.Property<Guid>("Token")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("RefrToken");
+
+                            b1.HasKey("AccountId");
+
+                            b1.ToTable("AspNetUsers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccountId");
+                        });
 
                     b.Navigation("RefreshToken");
                 });
@@ -401,12 +395,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("SharedLib.AccountsMsvc.Models.Account", b =>
                 {
                     b.Navigation("Passport");
-                });
-
-            modelBuilder.Entity("SharedLib.AccountsMsvc.Models.RefreshToken", b =>
-                {
-                    b.Navigation("Account")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

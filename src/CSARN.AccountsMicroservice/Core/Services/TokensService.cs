@@ -51,20 +51,14 @@ namespace Core.Services
             if (string.IsNullOrWhiteSpace(username))
                 throw new BadRequestException("Could not get a username from the claims.");
 
-            var acc = await _userManager.Users
-                //.Where()
-                .Include(a => a.RefreshToken)
-                .FirstOrDefaultAsync(a => a.UserName == username);
+            var acc = await _userManager.FindByNameAsync(username);
             if (acc == null)
                 throw new NotFoundException("There is no account with the specified username.");
-
-            //await _userManager.Users.Where(a => a.Id == acc.Id).Include(a => a.RefreshToken).LoadAsync();
 
             if (acc.RefreshToken == null || !acc.RefreshToken.IsActive || !acc.RefreshToken.Token.ToString().Equals(refreshToken))
                 throw new UnauthorizedException("Account's refresh token is null, expired, revoked or doesn't equal to provided refresh token.");
 
             var newRefrToken = GenerateRefreshToken();
-            acc.RefreshToken.Revoked = true;
             acc.RefreshToken = newRefrToken;
             await _userManager.UpdateAsync(acc);
 
@@ -103,7 +97,7 @@ namespace Core.Services
             {
                 if (account.RefreshToken != null)
                 {
-                    account.RefreshToken.Revoked = true;
+                    account.RefreshToken.IsRevoked = true;
                     await _userManager.UpdateAsync(account);
                 }
             }
@@ -111,9 +105,7 @@ namespace Core.Services
 
         public async Task RevokeRefreshTokenAsync(Guid accountId)
         {
-            var acc = await _userManager.Users
-                .Include(a => a.RefreshToken)
-                .FirstOrDefaultAsync(a => a.Id == accountId);
+            var acc = await _userManager.FindByIdAsync(accountId.ToString());
 
             if (acc == null)
                 throw new NotFoundException("There is no account with the specified id.");            
@@ -124,7 +116,7 @@ namespace Core.Services
             if (!acc.RefreshToken.IsActive)
                 throw new BadRequestException("Refresh token has already expired or been revoked.");
 
-            acc.RefreshToken.Revoked = true;
+            acc.RefreshToken.IsRevoked = true;
             await _userManager.UpdateAsync(acc);
         }
     }
