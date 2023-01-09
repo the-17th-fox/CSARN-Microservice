@@ -7,11 +7,10 @@ namespace Core.Interfaces.Services
 {
     public interface ITokensService
     {
-        public Task<TokenViewModel> RefreshAccessTokenAsync(string refreshToken, string accessToken);
-        public RefreshToken GenerateRefreshToken();
+        public Task<TokensViewModel> RefreshAccessTokenAsync(string refreshToken, string accessToken);
+        public Task<RefreshToken> IssueRefreshTokenAsync(Guid accountId);
         public Task RevokeRefreshTokenAsync(Guid accountId);
         public Task RevokeAllRefreshTokensAsync();
         public JwtSecurityToken CreateAccessToken(IList<Claim> claims);
-
     }
 }

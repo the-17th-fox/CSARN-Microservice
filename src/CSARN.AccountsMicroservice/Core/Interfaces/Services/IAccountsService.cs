@@ -8,7 +8,7 @@ namespace Core.Interfaces.Services
     {
         // Auth methods
         public Task CreateAsync(RegistrationViewModel regParams);
-        public Task<TokenViewModel> LoginAsync(LoginViewModel loginViewModel);
+        public Task<TokensViewModel> LoginAsync(LoginViewModel loginViewModel);
 
         // Accs management methods 
         public Task BlockAsync(Guid id);

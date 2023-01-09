@@ -20,7 +20,9 @@ var config = builder.Configuration;
 
 //Database
 services.AddDbContext<AccountsContext>(opt =>
-    opt.UseSqlServer(config.GetConnectionString("DatabaseConnection")));
+{
+    opt.UseSqlServer(config.GetConnectionString("DatabaseConnection"));
+});
 
 services.Configure<JwtConfigModel>(config.GetSection("Authentication").GetSection("Jwt"));
 services.Configure<JwtConfigModel>(opt =>
@@ -29,6 +31,7 @@ services.Configure<JwtConfigModel>(opt =>
 });
 
 services.AddScoped<ITokensService, TokensService>();
+services.AddScoped<ITokensRepository, TokensRepository>();
 services.AddScoped<IAccountsService, AccountsService>();
 services.AddScoped<IPassportsService, PassportsService>();
 services.AddScoped<IPassportsRepository, PassportsRepository>();

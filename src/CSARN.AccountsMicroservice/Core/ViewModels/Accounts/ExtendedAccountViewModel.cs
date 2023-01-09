@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace Core.ViewModels.Accounts
 {
     public class ExtendedAccountViewModel : AccountViewModel
     {
-        [JsonPropertyName("RefreshTokenExpiresAt")]
+        [JsonPropertyName("RefreshToken.ExpiresAt")]
         public DateTime? ExpiresAt { get; set; }
 
-        [JsonPropertyName("IsRefreshTokenRevoked")]
+        [JsonPropertyName("RefreshToken.IsRevoked")]
         public bool? IsRevoked { get; set; }
 
-        [JsonPropertyName("IsRefreshTokenActive")]
+        [JsonPropertyName("RefreshToken.IsActive")]
         public bool IsActive
         {
             get

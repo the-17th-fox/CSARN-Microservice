@@ -9,6 +9,10 @@ namespace Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Passports_AspNetUsers_AccountId",
+                table: "Passports");
+
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
@@ -54,75 +58,93 @@ namespace Infrastructure.Migrations
                 name: "TwoFactorEnabled",
                 table: "AspNetUsers");
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "RefrToken",
-                table: "AspNetUsers",
-                type: "uniqueidentifier",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "RefrToken.ExpAt",
-                table: "AspNetUsers",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "RefrToken.IsRevoked",
-                table: "AspNetUsers",
-                type: "bit",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Token = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IssuedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "bit", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Token);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_AspNetUsers_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("3c35a26d-fbba-4070-8e51-da970296d0be"), "542dd129-63fa-4cf3-82bd-9d772276f228", "Administrator", "Administrator" },
-                    { new Guid("60fe1c4e-d715-4f1e-ac7b-103c62f9c79d"), "55c24ccd-3055-4c86-b3de-8af901f4da30", "MinOfEmergencySituations", "MinOfEmergencySituations" },
-                    { new Guid("8ed1fa25-c70e-4595-a398-7c5e6a4e92dd"), "1662e5aa-922e-4fe9-ba19-d28b8caac6af", "MinOfHealth", "MinOfHealth" },
-                    { new Guid("96f0fe0c-126c-4041-9a27-a1fe203ddd5c"), "8b556512-42c2-4d68-bcca-3bf9fab10b0a", "Citizen", "Citizen" },
-                    { new Guid("e116b3eb-de4a-450a-bf77-29b07615c629"), "cd88e363-b4f6-49df-abb6-6cda20cfd05d", "MinOfInternalAffairs", "MinOfInternalAffairs" }
+                    { new Guid("032227bd-fe71-40c1-a820-1368fc9559d9"), "957b27ad-6127-4853-bff9-c4d4d2885824", "Citizen", "Citizen" },
+                    { new Guid("190b7eb5-a2c5-466b-ac87-18746f19dfab"), "cb60c646-5579-4956-986f-78feb39ae445", "MinOfHealth", "MinOfHealth" },
+                    { new Guid("833193b4-afdc-4bc8-8043-5b41b4bf532b"), "a8cdf953-8df4-446f-bdec-42a5f1f6b3f2", "MinOfInternalAffairs", "MinOfInternalAffairs" },
+                    { new Guid("ac2644ec-b9d3-4634-a7da-e711db6c7310"), "a22cbf28-6774-4b4c-8410-f70db31df87d", "MinOfEmergencySituations", "MinOfEmergencySituations" },
+                    { new Guid("ad73eb44-d408-4e3c-a6fd-522f9436cf4b"), "f89438ec-46ab-4014-8db9-d26c0d363957", "MunicipalRepresentative", "MunicipalRepresentative" },
+                    { new Guid("ec0196bc-16a3-4e8d-a6cd-abcb2e193f40"), "fd45aab6-8319-4cdd-9d75-803f5cdd4c91", "Administrator", "Administrator" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_AccountId",
+                table: "RefreshTokens",
+                column: "AccountId",
+                unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Passports_AspNetUsers_AccountId",
+                table: "Passports",
+                column: "AccountId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: new Guid("3c35a26d-fbba-4070-8e51-da970296d0be"));
+            migrationBuilder.DropForeignKey(
+                name: "FK_Passports_AspNetUsers_AccountId",
+                table: "Passports");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("60fe1c4e-d715-4f1e-ac7b-103c62f9c79d"));
+                keyValue: new Guid("032227bd-fe71-40c1-a820-1368fc9559d9"));
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("8ed1fa25-c70e-4595-a398-7c5e6a4e92dd"));
+                keyValue: new Guid("190b7eb5-a2c5-466b-ac87-18746f19dfab"));
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("96f0fe0c-126c-4041-9a27-a1fe203ddd5c"));
+                keyValue: new Guid("833193b4-afdc-4bc8-8043-5b41b4bf532b"));
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: new Guid("e116b3eb-de4a-450a-bf77-29b07615c629"));
+                keyValue: new Guid("ac2644ec-b9d3-4634-a7da-e711db6c7310"));
 
-            migrationBuilder.DropColumn(
-                name: "RefrToken",
-                table: "AspNetUsers");
+            migrationBuilder.DeleteData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: new Guid("ad73eb44-d408-4e3c-a6fd-522f9436cf4b"));
 
-            migrationBuilder.DropColumn(
-                name: "RefrToken.ExpAt",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "RefrToken.IsRevoked",
-                table: "AspNetUsers");
+            migrationBuilder.DeleteData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: new Guid("ec0196bc-16a3-4e8d-a6cd-abcb2e193f40"));
 
             migrationBuilder.AddColumn<bool>(
                 name: "EmailConfirmed",
@@ -169,6 +191,14 @@ namespace Infrastructure.Migrations
                     { new Guid("99cbf68a-f4e8-4222-8b3a-191ee30a9da3"), "f7a3ea0e-354a-4af9-9747-51d2d8b08991", "MinOfInternalAffairs", "MinOfInternalAffairs" },
                     { new Guid("bd007970-24a0-4bfd-bbf5-7ed4885a3f7c"), "9fc5a561-9c54-4352-8a77-086abb286e28", "Citizen", "Citizen" }
                 });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Passports_AspNetUsers_AccountId",
+                table: "Passports",
+                column: "AccountId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
     }
 }

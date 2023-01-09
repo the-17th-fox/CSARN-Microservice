@@ -43,7 +43,8 @@ namespace Web.AppParams
                     AccountsRoles.MIA,
                     AccountsRoles.ME,
                     AccountsRoles.MES,
-                    AccountsRoles.MH);
+                    AccountsRoles.MH,
+                    AccountsRoles.MR);
             });
 
             opt.AddPolicy(AccountsPolicies.StateExecutives, policy =>
@@ -55,7 +56,8 @@ namespace Web.AppParams
                     AccountsRoles.MIA,
                     AccountsRoles.ME,
                     AccountsRoles.MES,
-                    AccountsRoles.MH);
+                    AccountsRoles.MH,
+                    AccountsRoles.MR);
             });
 
             opt.AddPolicy(AccountsPolicies.Administrators, policy =>

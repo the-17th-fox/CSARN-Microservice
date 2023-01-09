@@ -1,4 +1,5 @@
-﻿using Core.Interfaces.Services;
+﻿using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 using Core.Utilities;
 using Core.ViewModels.Accounts;
 using CSARN.SharedLib.Constants.CustomExceptions;
@@ -16,11 +17,13 @@ namespace Core.Services
     {
         private readonly JwtConfigModel _jwtConfig;
         private readonly UserManager<Account> _userManager;
+        private readonly ITokensRepository _tokensRep;
 
-        public TokensService(IOptions<JwtConfigModel> jwtConfig, UserManager<Account> userManager)
+        public TokensService(IOptions<JwtConfigModel> jwtConfig, UserManager<Account> userManager, ITokensRepository tokensRepository)
         {
             _jwtConfig = jwtConfig.Value;
             _userManager = userManager;
+            _tokensRep = tokensRepository;
         }
 
         public JwtSecurityToken CreateAccessToken(IList<Claim> claims)
@@ -35,13 +38,19 @@ namespace Core.Services
                 signingCredentials: new SigningCredentials(symSecurityKey, SecurityAlgorithms.HmacSha256));
         }
 
-        public RefreshToken GenerateRefreshToken()
+        private RefreshToken GenerateRefreshToken(Guid accountId)
         {
             var expAt = _jwtConfig.RefreshTokenLifetimeInDays;
-            return new RefreshToken(DateTime.UtcNow.AddDays(expAt));
+            return new RefreshToken(DateTime.UtcNow.AddDays(expAt), accountId);
         }
 
-        public async Task<TokenViewModel> RefreshAccessTokenAsync(string refreshToken, string accessToken)
+        public async Task<RefreshToken> IssueRefreshTokenAsync(Guid accountId)
+        {
+            var newRefrToken = GenerateRefreshToken(accountId);
+            return await _tokensRep.IssueRefreshTokenAsync(newRefrToken);
+        }
+
+        public async Task<TokensViewModel> RefreshAccessTokenAsync(string refreshToken, string accessToken)
         {
             var principal = GetClaimsPrincipalFromToken(accessToken);
             if(principal == null)
@@ -51,23 +60,26 @@ namespace Core.Services
             if (string.IsNullOrWhiteSpace(username))
                 throw new BadRequestException("Could not get a username from the claims.");
 
-            var acc = await _userManager.FindByNameAsync(username);
+            var acc = await _userManager.Users
+                .Where(a => a.UserName == username)
+                .Include(a => a.RefreshToken)
+                .FirstOrDefaultAsync();
             if (acc == null)
                 throw new NotFoundException("There is no account with the specified username.");
 
             if (acc.RefreshToken == null || !acc.RefreshToken.IsActive || !acc.RefreshToken.Token.ToString().Equals(refreshToken))
                 throw new UnauthorizedException("Account's refresh token is null, expired, revoked or doesn't equal to provided refresh token.");
 
-            var newRefrToken = GenerateRefreshToken();
-            acc.RefreshToken = newRefrToken;
-            await _userManager.UpdateAsync(acc);
+            var newRefrToken = await IssueRefreshTokenAsync(acc.Id);
 
             var newAccessToken = CreateAccessToken(principal!.Claims.ToList());       
 
             return new()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
-                RefreshToken = newRefrToken.Token
+                RefreshToken = newRefrToken.Token,
+                RefreshTokenExpiresAt = newRefrToken.ExpiresAt,
+                AccessTokenExpiresAt = newAccessToken.ValidTo
             };
         }
 
@@ -91,33 +103,8 @@ namespace Core.Services
             return principal;
         }
 
-        public async Task RevokeAllRefreshTokensAsync()
-        {
-            foreach (var account in await _userManager.Users.Include(a => a.RefreshToken).ToListAsync())
-            {
-                if (account.RefreshToken != null)
-                {
-                    account.RefreshToken.IsRevoked = true;
-                    await _userManager.UpdateAsync(account);
-                }
-            }
-        }
+        public async Task RevokeAllRefreshTokensAsync() => await _tokensRep.RevokeAllRefreshTokensAsync();
 
-        public async Task RevokeRefreshTokenAsync(Guid accountId)
-        {
-            var acc = await _userManager.FindByIdAsync(accountId.ToString());
-
-            if (acc == null)
-                throw new NotFoundException("There is no account with the specified id.");            
-
-            if (acc.RefreshToken == null)
-                throw new BadRequestException("Account doesn't have a refresh token.");
-
-            if (!acc.RefreshToken.IsActive)
-                throw new BadRequestException("Refresh token has already expired or been revoked.");
-
-            acc.RefreshToken.IsRevoked = true;
-            await _userManager.UpdateAsync(acc);
-        }
+        public async Task RevokeRefreshTokenAsync(Guid accountId) => await _tokensRep.RevokeRefreshTokenAsync(accountId);
     }
 }

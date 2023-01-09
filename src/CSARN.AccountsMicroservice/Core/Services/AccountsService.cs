@@ -1,16 +1,13 @@
 ﻿using Core.Domain.ViewModels.Accounts;
 using Core.Interfaces.Services;
-using Core.Utilities;
 using Core.ViewModels.Accounts;
 using CSARN.SharedLib.Constants.CustomExceptions;
 using CSARN.SharedLib.Utilities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using SharedLib.AccountsMsvc.Misc;
 using SharedLib.AccountsMsvc.Models;
 using SharedLib.Auth;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Transactions;
@@ -74,9 +71,12 @@ namespace Core.Services
             }
         }
 
-        public async Task<TokenViewModel> LoginAsync(LoginViewModel loginViewModel)
+        public async Task<TokensViewModel> LoginAsync(LoginViewModel loginViewModel)
         {
-            var acc = await _userManager.FindByEmailAsync(loginViewModel.Email);
+            var acc = await _userManager.Users
+                .Where(a => a.Email == loginViewModel.Email)
+                .Include(a => a.RefreshToken)
+                .FirstOrDefaultAsync();
             if (acc == null)
                 throw new NotFoundException($"There is no account with the specified email.");
 
@@ -94,9 +94,8 @@ namespace Core.Services
                     if (!(await _userManager.UpdateAsync(acc)).Succeeded)
                         throw new Exception("Updating account's blocked status has failed.");
                 }
-                throw new UnauthorizedException("Password check has failed.");
+                throw new UnauthorizedException("Password check has been failed.");
             }
-
             acc.AccessFailedCount = 0;
 
             var accRoles = await _userManager.GetRolesAsync(acc);
@@ -104,14 +103,14 @@ namespace Core.Services
 
             var accessToken = _tokensSvc.CreateAccessToken(userClaims);
 
-            var refrToken = _tokensSvc.GenerateRefreshToken();
-            acc.RefreshToken = refrToken;
-            await _userManager.UpdateAsync(acc);
+            var refrToken = await _tokensSvc.IssueRefreshTokenAsync(acc.Id);
 
-            return new TokenViewModel()
+            return new()
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
-                RefreshToken = refrToken.Token
+                RefreshToken = refrToken.Token,
+                RefreshTokenExpiresAt = refrToken.ExpiresAt,
+                AccessTokenExpiresAt = accessToken.ValidTo
             };
         }
 
@@ -235,7 +234,10 @@ namespace Core.Services
 
         private async Task<Account> CheckIfExistsAsync(Guid accountId)
         {
-            var acc = await _userManager.FindByIdAsync(accountId.ToString());
+            var acc = await _userManager.Users
+                .Include(a => a.RefreshToken)
+                .Where(a => a.Id == accountId)
+                .FirstOrDefaultAsync();
             if (acc == null)
                 throw new NotFoundException($"There is no account with the specified id.");
 

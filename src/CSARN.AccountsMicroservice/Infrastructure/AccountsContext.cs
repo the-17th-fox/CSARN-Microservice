@@ -10,10 +10,9 @@ namespace Infrastructure
     public class AccountsContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
     {
         public DbSet<Passport> Passports => Set<Passport>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
-        public AccountsContext(DbContextOptions<AccountsContext> opt) : base(opt)
-        {
-        }
+        public AccountsContext(DbContextOptions<AccountsContext> opt) : base(opt) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,6 +26,16 @@ namespace Infrastructure
                 .Ignore(c => c.TwoFactorEnabled)
                 .Ignore(c => c.LockoutEnabled)
                 .Ignore(c => c.LockoutEnd);
+
+            builder.Entity<Account>()
+                .HasOne(a => a.RefreshToken)
+                .WithOne(rt => rt.Account)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Account>()
+                .HasOne(a => a.Passport)
+                .WithOne(p => p.Account)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

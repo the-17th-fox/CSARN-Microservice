@@ -2,7 +2,6 @@
 using Core.Interfaces.Services;
 using Core.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedLib.Auth;
 using System.Security.Claims;
@@ -43,7 +42,7 @@ namespace Web.Controllers.Accounts
         {
             var accs = await _accSvc.GetAllAsync(paginationViewModel);
 
-            var modelsList = _mapper.Map<List<ExtendedAccountViewModel>>(accs);
+            var modelsList = _mapper.Map<List<AccountViewModel>>(accs);
             modelsList.ForEach(async m => m.Roles = await _accSvc.GetRolesAsync(m.Id));
 
             return Ok(modelsList);

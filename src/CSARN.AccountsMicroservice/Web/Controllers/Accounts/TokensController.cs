@@ -20,7 +20,7 @@ namespace Web.Controllers.Accounts
 
         [AllowAnonymous]
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshAccessTokenAsync([FromBody] TokenViewModel tokenViewModel)
+        public async Task<IActionResult> RefreshAccessTokenAsync([FromBody] TokensRefreshingViewModel tokenViewModel)
         {
             var tokensPair = await _tokensSvc.RefreshAccessTokenAsync(tokenViewModel.RefreshToken.ToString(), tokenViewModel.AccessToken);
             return Ok(tokensPair);
