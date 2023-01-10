@@ -1,28 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedLib.AccountsMsvc.Models
 {
-    [Owned]
+    [Index(nameof(AccountId), IsUnique = true)]
     public class RefreshToken
     {
-        [Column("RefrToken")]
-        public Guid Token { get; set; } = Guid.NewGuid();
-
-        [Column("RefrToken.ExpAt")]
+        [Key]
+        public Guid Token { get; set; }
         public DateTime ExpiresAt { get; set; }
-
-        [Column("RefrToken.IsRevoked")]
+        public DateTime IssuedAt { get; set; } = DateTime.UtcNow;
         public bool IsRevoked { get; set; } = false;
+
+        public Guid AccountId { get; set; }
+        public Account Account { get; set; } = null!;
 
         [NotMapped]
         public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
         [NotMapped]
         public bool IsActive => !(IsExpired || IsRevoked);
 
-        public RefreshToken(DateTime expiresAt)
+        public RefreshToken(DateTime expiresAt, Guid accountId)
         {
             ExpiresAt = expiresAt;
+            AccountId = accountId;
         }
     }
 }

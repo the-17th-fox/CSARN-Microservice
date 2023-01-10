@@ -12,6 +12,7 @@ namespace SharedLib.Auth
         public const string MH = "MinOfHealth";
         public const string MD = "MinOfDefence";
         public const string ME = "MinOfEducation";
+        public const string MR = "MunicipalRepresentative";
 
         public static List<IdentityRole<Guid>> Roles { get; } = new()
         {
@@ -20,6 +21,7 @@ namespace SharedLib.Auth
             new IdentityRole<Guid>(MES) { Id = Guid.NewGuid(), NormalizedName = MES.Normalize() },
             new IdentityRole<Guid>(MIA) { Id = Guid.NewGuid(), NormalizedName = MIA.Normalize() },
             new IdentityRole<Guid>(MH) { Id = Guid.NewGuid(), NormalizedName = MH.Normalize() },
+            new IdentityRole<Guid>(MR) { Id = Guid.NewGuid(), NormalizedName = MR.Normalize() },
         };
     }
 }
