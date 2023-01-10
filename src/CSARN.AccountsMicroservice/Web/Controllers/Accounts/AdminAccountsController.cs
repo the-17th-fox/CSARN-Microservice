@@ -2,7 +2,6 @@
 using Core.Interfaces.Services;
 using Core.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedLib.Auth;
 using System.Security.Claims;
@@ -32,7 +31,7 @@ namespace Web.Controllers.Accounts
             var acc = await _accSvc.GetByIdAsync(id, returnDeleted, returnBlocked);
             var roles = await _accSvc.GetRolesAsync(id);
 
-            var model = _mapper.Map<AccountViewModel>(acc);
+            var model = _mapper.Map<ExtendedAccountViewModel>(acc);
             model.Roles = roles;
 
             return Ok(model);
@@ -70,8 +69,15 @@ namespace Web.Controllers.Accounts
             return Ok();
         }
 
+        [HttpPatch("clear-access-failed-counter/{id}")]
+        public async Task<IActionResult> ClearAccessFailedCounterAsync(Guid id)
+        {
+            await _accSvc.ClearAccessFailedCounterAsync(id);
+            return Ok();
+        }
+
         [HttpPatch("change-role/{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id, string newRoleName)
+        public async Task<IActionResult> ChangeRoleAsync(Guid id, string newRoleName)
         {
             await _accSvc.ChangeRoleAsync(id, newRoleName);
             return Ok();

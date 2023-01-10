@@ -41,8 +41,8 @@ namespace Web.Controllers.Accounts
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginModel)
         {
-            var token = await _accSvc.LoginAsync(loginModel);
-            return Ok(new { BearerToken = token });
+            var tokensPair = await _accSvc.LoginAsync(loginModel);
+            return Ok(tokensPair);
         }
 
         [Authorize(Policy = AccountsPolicies.DefaultRights)]

@@ -2,7 +2,6 @@
 using Core.Interfaces.Services;
 using Core.ViewModels.Passports;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedLib.Auth;
 using System.Security.Claims;
