@@ -5,12 +5,15 @@ using CSARN.SharedLib.Constants.CustomExceptions;
 using CSARN.SharedLib.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SharedLib.AccountsMsvc.Misc;
 using SharedLib.AccountsMsvc.Models;
 using SharedLib.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Transactions;
+using Core.Utilities;
+using Microsoft.Extensions.Options;
 
 namespace Core.Services
 {
@@ -18,11 +21,15 @@ namespace Core.Services
     {
         private readonly UserManager<Account> _userManager;
         private readonly ITokensService _tokensSvc;
+        private readonly IMemoryCache _cache;
+        private readonly CacheOptions _cacheOptions;
 
-        public AccountsService(UserManager<Account> userManager, ITokensService tokensSvc)
+        public AccountsService(UserManager<Account> userManager, ITokensService tokensSvc, IMemoryCache cache, IOptions<CacheOptions> cacheOptions)
         {
             _userManager = userManager;
             _tokensSvc = tokensSvc;
+            _cache = cache;
+            _cacheOptions = cacheOptions.Value;
         }
         
         /// Auth methods below
@@ -189,6 +196,11 @@ namespace Core.Services
 
         public async Task<List<Account>> GetAllAsync(AccPaginationViewModel pageParams)
         {
+            string cacheKey = @$"getall/{pageParams.PageNumber}/{pageParams.PageSize}/{pageParams.ShowBlocked}/{pageParams.ShowDeleted}";
+
+            if (TryGetFromCache<string, List<Account>>(cacheKey, out var accounts)) // accounts declaration
+                return accounts;
+
             var query = _userManager.Users;
 
             if (!pageParams.ShowDeleted)
@@ -197,7 +209,9 @@ namespace Core.Services
             if (!pageParams.ShowBlocked)
                 query.Where(u => u.IsBlocked == false);
 
-            return await PagedList<Account>.ToPagedListAsync(query, pageParams.PageNumber, pageParams.PageSize);
+            accounts = await PagedList<Account>.ToPagedListAsync(query, pageParams.PageNumber, pageParams.PageSize);
+            SetCache(cacheKey, accounts);
+            return accounts;
         }
 
         public async Task<Account> GetByIdAsync(Guid id, bool returnDeleted, bool returnBlocked = true)
@@ -234,14 +248,28 @@ namespace Core.Services
 
         private async Task<Account> CheckIfExistsAsync(Guid accountId)
         {
-            var acc = await _userManager.Users
+            if (TryGetFromCache<Guid,Account>(accountId, out var account)) // account declaration
+                return account;
+
+            account = await _userManager.Users
                 .Include(a => a.RefreshToken)
-                .Where(a => a.Id == accountId)
-                .FirstOrDefaultAsync();
-            if (acc == null)
+                .FirstOrDefaultAsync(a => a.Id == accountId);
+
+            if (account == null)
                 throw new NotFoundException($"There is no account with the specified id.");
 
-            return acc;
+            SetCache(account!.Id, account);
+            return account;
+        }
+
+        private void SetCache<TKey,TValue>(TKey key, TValue value) where TValue : class
+        {
+            _cache.Set<TValue>(key, value, TimeSpan.FromMinutes(_cacheOptions.LifetimeInMinutes));
+        }
+
+        private bool TryGetFromCache<TKey,TValue>(TKey key, out TValue value) where TValue : class
+        {
+            return _cache.TryGetValue<TValue>(key, out value);
         }
     }
 }

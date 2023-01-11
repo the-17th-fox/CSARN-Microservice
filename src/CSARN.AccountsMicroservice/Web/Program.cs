@@ -30,6 +30,8 @@ services.Configure<JwtConfigModel>(opt =>
     opt.Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Authentication:Jwt:Key"]));
 });
 
+services.Configure<CacheOptions>(config.GetSection("Cache").GetSection("MemoryCache"));
+
 services.AddScoped<ITokensService, TokensService>();
 services.AddScoped<ITokensRepository, TokensRepository>();
 services.AddScoped<IAccountsService, AccountsService>();
@@ -57,6 +59,7 @@ services.AddAuthorization(opt => opt.GetPredefinedOptions());
 
 services.AddAutoMapper(typeof(MapperProfile));
 
+services.AddMemoryCache();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
