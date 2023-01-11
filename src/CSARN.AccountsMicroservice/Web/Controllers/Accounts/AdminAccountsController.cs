@@ -43,7 +43,10 @@ namespace Web.Controllers.Accounts
             var accs = await _accSvc.GetAllAsync(paginationViewModel);
 
             var modelsList = _mapper.Map<List<AccountViewModel>>(accs);
-            modelsList.ForEach(async m => m.Roles = await _accSvc.GetRolesAsync(m.Id));
+            foreach (var model in modelsList)
+            {
+                model.Roles = await _accSvc.GetRolesAsync(model.Id);
+            }
 
             return Ok(modelsList);
         }
